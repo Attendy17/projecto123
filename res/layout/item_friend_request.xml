@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:background="#FFEEEE"
+    android:layout_marginBottom="8dp">
+
+    <!-- Profile image -->
+    <ImageView
+        android:id="@+id/friendImage"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_launcher_foreground"
+        android:layout_marginEnd="12dp"
+        android:contentDescription="Profile picture" />
+
+    <!-- Container for user details and action button -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <!-- Friend's name -->
+        <TextView
+            android:id="@+id/friendName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <!-- Friend's age -->
+        <TextView
+            android:id="@+id/friendAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Age" />
+
+        <!-- Friend's town -->
+        <TextView
+            android:id="@+id/friendTown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Town" />
+
+        <!-- Button to accept the friend request -->
+        <Button
+            android:id="@+id/acceptButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Accept request"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+</LinearLayout>

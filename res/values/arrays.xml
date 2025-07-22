@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="degrees">
+        <item>High School Degree</item>
+        <item>Bachelors Degree</item>
+        <item>Masters Degree</item>
+        <item>Doctorate Degree</item>
+        <item>Other</item>
+    </string-array>
+
+</resources>

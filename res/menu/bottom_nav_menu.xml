@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Profile section: shows the user's personal timeline -->
+    <item
+        android:id="@+id/nav_profile"
+        android:title="Profile"
+        android:icon="@drawable/profile" />
+
+    <!-- Search section: used to find other users -->
+    <item
+        android:id="@+id/nav_search"
+        android:title="Search"
+        android:icon="@drawable/search" />
+
+    <!-- Friend List section: shows friend requests and confirmed friends -->
+    <item
+        android:id="@+id/nav_friends"
+        android:title="Friend List"
+        android:icon="@drawable/friendlist" />
+
+</menu>

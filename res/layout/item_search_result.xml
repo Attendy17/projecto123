@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="12dp"
+    android:background="#DDFFDD"
+    android:layout_marginBottom="8dp">
+
+    <!-- Profile image -->
+    <ImageView
+        android:id="@+id/friendImage"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleType="centerCrop"
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/ic_launcher_foreground"
+        android:contentDescription="Profile picture" />
+
+    <!-- Container for user information and Add Friend button -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <!-- Friend name -->
+        <TextView
+            android:id="@+id/friendName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <!-- Friend age -->
+        <TextView
+            android:id="@+id/friendAge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Age: 0" />
+
+        <!-- Friend town -->
+        <TextView
+            android:id="@+id/friendTown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Town: -" />
+
+        <!-- Button to send a friend request -->
+        <Button
+            android:id="@+id/buttonAddFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Add Friend"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+</LinearLayout>
