@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                      https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+  version="6.0"
+  metadata-complete="true">
+
+  <display-name>Welcome to Tomcat</display-name>
+  <description>
+     Welcome to Tomcat
+  </description>
+
+
+    <servlet>
+          <servlet-name>sessionServlet</servlet-name>
+         <servlet-class>sessionServlet</servlet-class>
+         <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>sessionServlet</servlet-name>
+        <url-pattern>/sessionServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+         <servlet-name>ProfileServlet</servlet-name>
+         <servlet-class>ProfileServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ProfileServlet</servlet-name>
+        <url-pattern>/ProfileServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+         <servlet-name>SearchFriendServlet</servlet-name>
+         <servlet-class>SearchFriendServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>SearchFriendServlet</servlet-name>
+        <url-pattern>/SearchFriendServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+         <servlet-name>FriendServlet</servlet-name>
+         <servlet-class>FriendServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>FriendServlet</servlet-name>
+        <url-pattern>/FriendServlet</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+         <servlet-name>ListFriendsServlet</servlet-name>
+         <servlet-class>ListFriendsServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>ListFriendsServlet</servlet-name>
+        <url-pattern>/ListFriendsServlet</url-pattern>
+    </servlet-mapping>
+
+
+
+    
+</web-app>

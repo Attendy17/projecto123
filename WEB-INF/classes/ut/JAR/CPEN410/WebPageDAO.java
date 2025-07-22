@@ -1,0 +1,58 @@
+package ut.JAR.CPEN410;
+
+import java.sql.ResultSet;
+
+/**
+ * WebPageDAO
+ * ==========
+ * Very small helper that lets JSPs (or Servlets) fetch the full row of a page
+ * stored in table <kbd>webPageGood</kbd>.
+ *
+ * <p>The DAO follows the same conventions as the rest of the project:</p>
+ * <ul>
+ *   <li>Uses {@link MySQLCompleteConnector} to keep the connection open.</li>
+ *   <li>Builds the SQL statement by concatenating strings — no <code>?</code>
+ *       placeholders — because that is the style required by the professor.</li>
+ * </ul>
+ *
+ * <p><strong>Typical usage</strong></p>
+ * <pre>{@code
+ * WebPageDAO dao = new WebPageDAO();
+ * ResultSet rs   = dao.getPageById(7);
+ * if (rs.next()) {
+ *     String url   = rs.getString("pageURL");
+ *     String title = rs.getString("Title");
+ * }
+ * dao.close();
+ * }</pre>
+ */
+public class WebPageDAO {
+
+    /** Low‑level connector wrapper (keeps a live JDBC connection). */
+    private final MySQLCompleteConnector connector;
+
+    /** Opens the DB connection as soon as the DAO is instantiated. */
+    public WebPageDAO() {
+        System.out.println("WebPageDAO loaded.");
+        connector = new MySQLCompleteConnector();
+        connector.doConnection();
+    }
+
+    /* ───────────────────────── query ─────────────────────────────── */
+
+    /**
+     * Returns the complete row of <code>webPageGood</code> whose primary‑key is
+     * <code>id</code>.
+     *
+     * @param id primary key of the page.
+     * @return <code>ResultSet</code> positioned <em>before first</em>.
+     */
+    public ResultSet getPageById(long id) {
+        return connector.doSelect("*", "webPageGood", "id=" + id);
+    }
+
+    /* ───────────────────────── shutdown ──────────────────────────── */
+
+    /** Closes the JDBC connection. */
+    public void close() { connector.closeConnection(); }
+}
