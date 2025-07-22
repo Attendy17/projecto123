@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Sign Up Form</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      .signup-container {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 40px;
+        width: 90%;
+        max-width: 400px;
+      }
+
+      .logo {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+
+      .logo h1 {
+        font-size: 24px;
+        color: #333;
+      }
+
+      .signup-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      .form-group {
+        margin-bottom: 15px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #555;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+
+      .form-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+
+      .form-buttons input[type="submit"],
+      .form-buttons input[type="reset"] {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      .form-buttons input[type="submit"] {
+        background: linear-gradient(90deg, #4e310c 0%, #271c03 100%);
+        color: #fff;
+      }
+
+      .form-buttons input[type="reset"] {
+        background-color: #4e310c;
+        color: #fff;
+      }
+
+      .login-link {
+        text-align: center;
+        margin-top: 20px;
+      }
+
+      .login-link a {
+        color: #4e310c;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .login-link a:hover {
+        text-decoration: underline;
+      }
+
+      /* Column classes for 600px (tablet) */
+      @media screen and (min-width: 600px) {
+        .col-1  { width: 8.33%; }
+        .col-2  { width: 16.66%; }
+        .col-3  { width: 25%; }
+        .col-4  { width: 33.33%; }
+        .col-5  { width: 41.66%; }
+        .col-6  { width: 50%; }
+        .col-7  { width: 58.33%; }
+        .col-8  { width: 66.66%; }
+        .col-9  { width: 75%; }
+        .col-10 { width: 83.33%; }
+        .col-11 { width: 91.66%; }
+        .col-12 { width: 100%; }
+      }
+
+      /* Column classes for 768px (desktop) */
+      @media screen and (min-width: 768px) {
+        .col-1  { width: 8.33%; }
+        .col-2  { width: 16.66%; }
+        .col-3  { width: 25%; }
+        .col-4  { width: 33.33%; }
+        .col-5  { width: 41.66%; }
+        .col-6  { width: 50%; }
+        .col-7  { width: 58.33%; }
+        .col-8  { width: 66.66%; }
+        .col-9  { width: 75%; }
+        .col-10 { width: 83.33%; }
+        .col-11 { width: 91.66%; }
+        .col-12 { width: 100%; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="signup-container col-12">
+      <div class="logo">
+        <h1>minifacebook</h1>
+      </div>
+      <h2>Sign Up</h2>
+      <form id="form_1" action="addUser.jsp" method="post">
+        <div class="form-group">
+          <label for="userName">Email / Username:</label>
+          <input type="text" id="userName" name="userName" required />
+        </div>
+
+        <div class="form-group">
+          <label for="userPass">Password:</label>
+          <input type="password" id="userPass" name="userPass" required />
+        </div>
+
+        <div class="form-group">
+          <label for="completeName">Name:</label>
+          <input type="text" id="completeName" name="completeName" required />
+        </div>
+
+        <div class="form-group">
+          <label for="birthDate">Birth Date:</label>
+          <input type="date" id="birthDate" name="birthDate" required />
+        </div>
+
+        <div class="form-group">
+          <label for="gender">Gender:</label>
+          <select id="gender" name="gender" required>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-buttons">
+          <input type="submit" value="Submit" />
+          <input type="reset" value="Reset" />
+        </div>
+      </form>
+      <div class="login-link">
+        <p>¿Ya tienes una cuenta? <a href="loginHashing.html">Inicia sesión aquí</a></p>
+      </div>
+    </div>
+  </body>
+</html>
