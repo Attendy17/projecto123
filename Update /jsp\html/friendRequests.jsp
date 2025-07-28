@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="ut.JAR.CPEN410.FriendshipDAO" %>
+<%@ page import="ut.JAR.CPEN410.MySQLCompleteConnector" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="java.sql.Timestamp" %>
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Friend Requests - minifacebook</title>
+    <title>Mis Amigos - minifacebook</title>
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
@@ -15,136 +16,115 @@
         padding: 0;
         box-sizing: border-box;
       }
-
       body {
-        font-family: Arial, sans-serif;
-        background-color: #f8f9fa;
+        font-family: Calibri, sans-serif;
+        font-weight: bold;
+        background-color: #f8f9fa; /* gris claro */
+        color: #333; /* gris oscuro */
       }
-
       .taskbar {
-        background-color: #6F4E37;
+        background-color: #333;
         color: #fff;
         padding: 10px 20px;
         text-align: center;
       }
-
       .nav-bar {
         display: flex;
-        flex-direction: column;
-        gap: 10px;
-        background-color: #6F4E37;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #333;
         padding: 10px 20px;
       }
-
       .nav-left {
         color: #fff;
         font-size: 18px;
-        font-weight: bold;
       }
-
       .nav-right {
         display: flex;
         flex-wrap: wrap;
         gap: 10px;
       }
-
       .nav-right a {
         color: #fff;
         text-decoration: none;
-        font-weight: bold;
+        padding: 6px 12px;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
       }
-
       .nav-right a:hover {
-        text-decoration: underline;
+        background-color: #555;
       }
 
       .container {
+        width: 90%;
+        max-width: 1000px;
+        margin: 20px auto;
         background-color: #fff;
         padding: 20px;
-        margin: 20px auto;
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        width: 90%;
-        max-width: 800px;
       }
 
-      h2 {
+      h1 {
         text-align: center;
-        color: #333;
         margin-bottom: 20px;
       }
 
       table {
         width: 100%;
         border-collapse: collapse;
+        margin-top: 20px;
       }
 
       th, td {
-        padding: 8px;
-        border: 1px solid #ddd;
+        padding: 10px;
+        border: 1px solid #ccc;
         text-align: left;
       }
 
       th {
-        background-color: #6F4E37;
-        color: #fff;
+        background-color: #444;
+        color: white;
       }
 
-      td a {
-        color: #6F4E37;
-        font-weight: bold;
-        text-decoration: none;
+      img {
+        border-radius: 50%;
+        object-fit: cover;
       }
 
-      td a:hover {
-        text-decoration: underline;
+      /* Column System */
+      .row {
+        display: flex;
+        flex-wrap: wrap;
       }
+      .col-1 { width: 8.33%; }
+      .col-2 { width: 16.66%; }
+      .col-3 { width: 25%; }
+      .col-4 { width: 33.33%; }
+      .col-5 { width: 41.66%; }
+      .col-6 { width: 50%; }
+      .col-7 { width: 58.33%; }
+      .col-8 { width: 66.66%; }
+      .col-9 { width: 75%; }
+      .col-10 { width: 83.33%; }
+      .col-11 { width: 91.66%; }
+      .col-12 { width: 100%; }
 
-      /* Column classes for tablet */
-      @media screen and (min-width: 600px) {
-        .col-1  { width: 8.33%; }
-        .col-2  { width: 16.66%; }
-        .col-3  { width: 25%; }
-        .col-4  { width: 33.33%; }
-        .col-5  { width: 41.66%; }
-        .col-6  { width: 50%; }
-        .col-7  { width: 58.33%; }
-        .col-8  { width: 66.66%; }
-        .col-9  { width: 75%; }
-        .col-10 { width: 83.33%; }
-        .col-11 { width: 91.66%; }
-        .col-12 { width: 100%; }
-
+      @media only screen and (max-width: 600px) {
         .nav-bar {
-          flex-direction: row;
-          justify-content: space-between;
-          align-items: center;
+          flex-direction: column;
         }
-      }
-
-      /* Column classes for desktop */
-      @media screen and (min-width: 768px) {
-        .col-1  { width: 8.33%; }
-        .col-2  { width: 16.66%; }
-        .col-3  { width: 25%; }
-        .col-4  { width: 33.33%; }
-        .col-5  { width: 41.66%; }
-        .col-6  { width: 50%; }
-        .col-7  { width: 58.33%; }
-        .col-8  { width: 66.66%; }
-        .col-9  { width: 75%; }
-        .col-10 { width: 83.33%; }
-        .col-11 { width: 91.66%; }
-        .col-12 { width: 100%; }
+        .nav-right {
+          flex-direction: column;
+          width: 100%;
+        }
+        .nav-right a {
+          width: 100%;
+          text-align: left;
+        }
       }
     </style>
-    <script>
-      window.onpageshow = function(event) {
-        if (event.persisted) {
-          window.location.reload();
-        }
-      };
-    </script>
   </head>
   <body>
 <%
@@ -159,64 +139,67 @@
       <h1>minifacebook</h1>
     </div>
     <div class="nav-bar">
-      <div class="nav-left">Welcome, <%= userName %>!</div>
+      <div class="nav-left">Bienvenido, <%= userName %>!</div>
       <div class="nav-right">
-        <a href="welcomeMenu.jsp">Home</a>
-        <a href="profile.jsp">Profile</a>
-        <a href="searchFriends.jsp">Search Friends</a>
-        <a href="friendList.jsp">Friend List</a>
-        <a href="signout.jsp">Sign Out</a>
+        <a href="welcomeMenu.jsp">Inicio</a>
+        <a href="profile.jsp">Perfil</a>
+        <a href="searchFriends.jsp">Buscar Amigos</a>
+        <a href="signout.jsp">Cerrar Sesión</a>
       </div>
     </div>
-
     <div class="container col-12">
-      <h2>Incoming Friend Requests</h2>
+      <h1>Mis Amigos</h1>
 <%
     FriendshipDAO dao = new FriendshipDAO();
-    ResultSet rs = null;
     try {
-        rs = dao.listIncomingRequests(userId);
-        boolean hasRequests = false;
+        ResultSet rs = dao.listFriends(userId);
 %>
-      <table>
-        <tr>
-          <th>ID Request</th>
-          <th>Sender</th>
-          <th>Date</th>
-          <th>Action</th>
-        </tr>
+      <div class="row">
+        <table class="col-12">
+          <tr>
+            <th class="col-3">Foto</th>
+            <th class="col-2">ID</th>
+            <th class="col-4">Nombre</th>
+            <th class="col-3">Fecha</th>
+          </tr>
 <%
-        while(rs.next()){
-            hasRequests = true;
-            long requestId = rs.getLong("id");
-            String senderName = rs.getString("senderName");
+        while(rs.next()) {
+            long friendshipId = rs.getLong("id");
+            long user1 = rs.getLong("user1_id");
+            long user2 = rs.getLong("user2_id");
             Timestamp createdAt = rs.getTimestamp("created_at");
+            long friendId = (user1 == userId) ? user2 : user1;
+            String fechaAmistad = (createdAt != null) ? createdAt.toLocalDateTime().toLocalDate().toString() : "";
+            MySQLCompleteConnector connector = new MySQLCompleteConnector();
+            connector.doConnection();
+            ResultSet rsFriend = connector.doSelect("name, profile_picture", "users", "id = " + friendId);
+            String friendName = "";
+            String profilePic = "cpen410/imagesjson/default-profile.png";
+            if(rsFriend.next()) {
+                friendName = rsFriend.getString("name");
+                String pic = rsFriend.getString("profile_picture");
+                if(pic != null && !pic.trim().isEmpty()) profilePic = pic;
+            }
+            rsFriend.close();
+            connector.closeConnection();
 %>
-        <tr>
-          <td><%= requestId %></td>
-          <td><%= senderName %></td>
-          <td><%= createdAt %></td>
-          <td>
-            <a href="handleRequest.jsp?action=accept&friendshipId=<%= requestId %>">Accept</a>
-          </td>
-        </tr>
+          <tr>
+            <td class="col-3"><img src="<%= request.getContextPath() %>/<%= profilePic %>" width="50" height="50" /></td>
+            <td class="col-2"><%= friendshipId %></td>
+            <td class="col-4"><%= friendName %></td>
+            <td class="col-3"><%= fechaAmistad %></td>
+          </tr>
 <%
         }
         rs.close();
         dao.close();
-        if (!hasRequests) {
-%>
-        <tr>
-          <td colspan="4" style="text-align:center;">No incoming friend requests.</td>
-        </tr>
-<%
-        }
     } catch(Exception e) {
-        out.println("<p>Error loading friend requests: " + e.getMessage() + "</p>");
+        out.println("Error al listar amigos: " + e.getMessage());
         e.printStackTrace();
     }
 %>
-      </table>
+        </table>
+      </div>
     </div>
   </body>
 </html>
