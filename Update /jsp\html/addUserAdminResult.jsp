@@ -9,19 +9,27 @@
   <meta charset="UTF-8">
   <title>Add User – Result</title>
   <style>
-    body      { font-family: Arial, sans-serif; background:#f8f9fa; padding:40px; }
-    .card     { max-width:550px; margin:0 auto; background:#fff; border-radius:8px;
-                box-shadow:0 2px 10px rgba(0,0,0,.1); padding:30px; text-align:center; }
-    h1        { color:#4e310c; }
-    .error h1 { color:#b30000; }
-    a.btn     { display:inline-block; margin-top:20px; padding:10px 22px; background:#4e310c;
-                color:#fff; text-decoration:none; border-radius:4px; }
+    * { box-sizing: border-box; }
+    body      { font-family: Calibri, sans-serif; background: #f5f5f5; margin: 0; padding: 0; }
+    .container { width: 100%; padding: 40px; display: flex; justify-content: center; align-items: center; }
+    .row      { display: flex; flex-wrap: wrap; width: 100%; }
+    .col-100  { width: 100%; padding: 15px; }
+    .col-75   { width: 75%; padding: 15px; }
+    .col-66   { width: 66.66%; padding: 15px; }
+    .col-50   { width: 50%; padding: 15px; }
+    .col-33   { width: 33.33%; padding: 15px; }
+    .col-25   { width: 25%; padding: 15px; }
+    .card     { max-width: 600px; width: 100%; background: #ffffff; border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 30px; text-align: center; }
+    h1        { color: #4e4e4e; font-weight: bold; }
+    .error h1 { color: #b30000; }
+    a.btn     { display: inline-block; margin-top: 20px; padding: 10px 20px; background: #4e4e4e;
+                color: #fff; text-decoration: none; border-radius: 4px; font-weight: bold; }
   </style>
 </head>
 <body>
 
 <%
-// ───────────────────────── Validación de sesión y rol
   Object user = session.getAttribute("user");
   if (user == null) {
     response.sendRedirect("loginHashing.html"); 
@@ -34,7 +42,6 @@
     return;
   }
 
-  // ───────────────────────── Recoger parámetros del formulario
   String name      = request.getParameter("name");
   String email     = request.getParameter("email");
   String pass      = request.getParameter("userPass");
@@ -50,7 +57,6 @@
   String degree  = request.getParameter("degree");
   String school  = request.getParameter("school");
 
-  // ───────────────────────── Inserción en la base de datos
   boolean okUser  = false, okAddr = false, okEdu  = false;
   long    newId   = -1;
 
@@ -62,7 +68,6 @@
   }
   admin.close();
 
-  // ───────────────────────── Obtener el ID del nuevo usuario
   if (okUser) {
     applicationDBAuthenticationGoodComplete auth = new applicationDBAuthenticationGoodComplete();
     ResultSet rs = auth.authenticate(email, pass);
@@ -73,7 +78,6 @@
     auth.close();
   }
 
-  // ───────────────────────── Insertar dirección y educación si se creó el usuario
   if (newId != -1) {
     PersonalInfoDAO info = new PersonalInfoDAO();
     okAddr = info.addAddress  (newId, street, town, state, country);
@@ -84,18 +88,23 @@
   boolean success = okUser && okAddr && okEdu;
 %>
 
-<!-- ───────────────────────── Resultado en pantalla -->
-<div class="card <%= (success ? "" : "error") %>">
-<% if (success) { %>
-    <h1>User created successfully</h1>
-    <p><strong><%= email %></strong> is now
-       <%= (isAdmin ? "an <em>ADMIN</em>" : "a regular <em>USER</em>") %>.</p>
-    <a class="btn" href="adminDashboard.jsp">Back to dashboard</a>
-<% } else { %>
-    <h1>User could not be created</h1>
-    <p>Please check the data and try again.</p>
-    <a class="btn" href="addUserAdmin.jsp">Return to form</a>
-<% } %>
+<div class="container">
+  <div class="row">
+    <div class="col-100">
+      <div class="card <%= (success ? "" : "error") %>">
+      <% if (success) { %>
+        <h1>User created successfully</h1>
+        <p><strong><%= email %></strong> is now
+           <%= (isAdmin ? "an <em>ADMIN</em>" : "a regular <em>USER</em>") %>.</p>
+        <a class="btn" href="adminDashboard.jsp">Back to dashboard</a>
+      <% } else { %>
+        <h1>User could not be created</h1>
+        <p>Please check the data and try again.</p>
+        <a class="btn" href="addUserAdmin.jsp">Return to form</a>
+      <% } %>
+      </div>
+    </div>
+  </div>
 </div>
 
 </body>
