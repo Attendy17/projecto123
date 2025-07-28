@@ -2,32 +2,59 @@
 <%@ page import="java.sql.*" %>
 <html>
   <head>
+    <meta charset="UTF-8">
     <title>Sign Up Result</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      .container {
+        width: 50%;
+        background-color: #ffffff;
+        padding: 40px;
+        border-radius: 10px;
+        box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+        text-align: center;
+      }
+      h2 {
+        color: #343a40;
+        margin-bottom: 20px;
+      }
+      a {
+        text-decoration: none;
+        color: #007bff;
+        font-weight: bold;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
   </head>
   <body>
+    <div class="container">
 <%
-    // Retrieve parameters sent from newUser.html
-    // Note: "userName" will be used as the email.
     String userName = request.getParameter("userName");
     String userPass = request.getParameter("userPass");
     String completeName = request.getParameter("completeName");
-    String birthDate = request.getParameter("birthDate"); // format 'YYYY-MM-DD'
+    String birthDate = request.getParameter("birthDate");
     String gender = request.getParameter("gender");
-    
+
     try {
-        // Create an instance of applicationDBAuthenticationGoodComplete to handle authentication and user creation.
         applicationDBAuthenticationGoodComplete auth = new applicationDBAuthenticationGoodComplete();
-        // Call addUser method with 5 parameters (without profile picture)
         boolean res = auth.addUser(userName, completeName, userPass, birthDate, gender);
         if(res) {
-            // If insertion is successful, obtain the userId via authenticate (email is unique)
             ResultSet rs = auth.authenticate(userName, userPass);
             if(rs != null && rs.next()){
                 long userId = rs.getLong("id");
-                // Store userId in the session for later use
                 session.setAttribute("userId", userId);
             }
-            // Redirect to addPersonalInfo.jsp to continue the process
             response.sendRedirect("addPersonalInfo.jsp");
         } else {
 %>
@@ -35,13 +62,12 @@
             <a href="newUser.html">Try Again</a>
 <%
         }
-        // Close the connection/resources
         auth.close();
     } catch(Exception e) {
-        // Display error message and print stack trace for debugging purposes
-        out.println("Error: " + e.getMessage());
+        out.println("<h2>Error: " + e.getMessage() + "</h2>");
         e.printStackTrace();
     }
 %>
+    </div>
   </body>
 </html>
