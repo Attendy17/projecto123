@@ -1,56 +1,126 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="ut.JAR.CPEN410.FriendshipDAO" %>
+<!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="UTF-8">
-    <title>Send Friend Request - minifacebook</title>
+    <title>Send Friend Request - MiniFacebook</title>
     <style>
-      /* Basic styling for the page */
-      body { font-family: Arial, sans-serif; background-color: #f8f9fa; text-align: center; padding-top: 50px; }
-      a { text-decoration: none; color: #6F4E37; font-weight: bold; }
-    </style>
-  </head>
-  <body>
-<%
-    // Check if the user is authenticated by verifying the session attribute "userId"
-    Long userId = (Long) session.getAttribute("userId");
-    if (userId == null) {
-        // If not authenticated, redirect to the login page and exit further processing
-        response.sendRedirect("loginHashing.html");
-        return;
-    }
-    
-    // Retrieve the "friendId" parameter from the request, representing the ID of the friend to add
-    String friendIdStr = request.getParameter("friendId");
-    if (friendIdStr == null || friendIdStr.trim().isEmpty()) {
-        // If friendId is missing or empty, output an error message and stop processing
-        out.println("No friend ID specified.");
-        return;
-    }
-    // Convert the friendId parameter from String to a long value
-    long friendId = Long.parseLong(friendIdStr);
-    
-    // Create an instance of FriendshipDAO to manage friend-related operations
-    FriendshipDAO dao = new FriendshipDAO();
-    try {
-        // Attempt to send a friend request from the authenticated user to the specified friend
-        boolean success = dao.sendFriendRequest(userId, friendId);
-        // Close the DAO to free database resources
-        dao.close();
-        if (success) {
-            // Display a success message if the friend request was sent successfully
-            out.println("<h2>Friend request sent successfully.</h2>");
-        } else {
-            // Display a message if the request already exists or could not be sent
-            out.println("<h2>Friend request already exists or could not be sent.</h2>");
+        * {
+            box-sizing: border-box;
         }
-    } catch(Exception e) {
-        // In case of an exception, display an error message and print the stack trace for debugging
-        out.println("Error sending friend request: " + e.getMessage());
-        e.printStackTrace();
-    }
-%>
-<!-- Link to navigate back to the friend search page -->
-<a href="searchFriends.jsp">Back to search friends</a>
-  </body>
+        .row::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        [class*="col-"] {
+            float: left;
+            padding: 15px;
+        }
+        html {
+            font-family: 'Calibri', sans-serif;
+            font-weight: bold;
+        }
+        .header {
+            background-color: #444;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        .footer {
+            background-color: #777;
+            color: #fff;
+            text-align: center;
+            font-size: 14px;
+            padding: 15px;
+            margin-top: 40px;
+        }
+        .content {
+            background-color: #f4f4f4;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+        }
+        a {
+            text-decoration: none;
+            color: #2b2b2b;
+            font-weight: bold;
+        }
+        a:hover {
+            color: #555;
+        }
+
+        /* Mobile-first */
+        [class*="col-"] {
+            width: 100%;
+        }
+
+        /* Responsive layout for larger screens */
+        @media only screen and (min-width: 768px) {
+            .col-1 {width: 8.33%;}
+            .col-2 {width: 16.66%;}
+            .col-3 {width: 25%;}
+            .col-4 {width: 33.33%;}
+            .col-5 {width: 41.66%;}
+            .col-6 {width: 50%;}
+            .col-7 {width: 58.33%;}
+            .col-8 {width: 66.66%;}
+            .col-9 {width: 75%;}
+            .col-10 {width: 83.33%;}
+            .col-11 {width: 91.66%;}
+            .col-12 {width: 100%;}
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>MiniFacebook</h1>
+</div>
+
+<div class="row">
+    <div class="col-3"></div>
+    <div class="col-6">
+        <div class="content">
+        <%
+            Long userId = (Long) session.getAttribute("userId");
+            if (userId == null) {
+                response.sendRedirect("loginHashing.html");
+                return;
+            }
+
+            String friendIdStr = request.getParameter("friendId");
+            if (friendIdStr == null || friendIdStr.trim().isEmpty()) {
+                out.println("<h2>No friend ID specified.</h2>");
+                return;
+            }
+
+            long friendId = Long.parseLong(friendIdStr);
+            FriendshipDAO dao = new FriendshipDAO();
+            try {
+                boolean success = dao.sendFriendRequest(userId, friendId);
+                dao.close();
+                if (success) {
+                    out.println("<h2>Friend request sent successfully.</h2>");
+                } else {
+                    out.println("<h2>Friend request already exists or could not be sent.</h2>");
+                }
+            } catch(Exception e) {
+                out.println("<h2>Error sending friend request: " + e.getMessage() + "</h2>");
+                e.printStackTrace();
+            }
+        %>
+        <br><br>
+        <a href="searchFriends.jsp">← Back to search friends</a>
+        </div>
+    </div>
+    <div class="col-3"></div>
+</div>
+
+<div class="footer">
+    <p>MiniFacebook &copy; 2025</p>
+</div>
+
+</body>
 </html>
