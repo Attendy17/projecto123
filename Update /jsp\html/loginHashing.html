@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+v<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login - MiniFacebook</title>
   <style>
     * {
@@ -53,19 +53,10 @@
       text-align: center;
     }
 
-    .login-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 80vh;
-    }
-
     .login-box {
       background-color: #f1f1f1;
       padding: 20px;
       border-radius: 5px;
-      max-width: 400px;
-      width: 100%;
       box-shadow: 0 0 10px #ccc;
     }
 
@@ -127,26 +118,30 @@
     <h1>MiniFacebook</h1>
   </div>
 
-  <div class="login-container">
-    <div class="login-box">
-      <h2>Iniciar Sesión</h2>
-      <form action="validationHashing.jsp" method="post">
-        <div class="form-group">
-          <label for="userName">Email / Usuario:</label>
-          <input type="text" id="userName" name="userName" required />
+  <div class="row">
+    <div class="col-3"></div> <!-- Espacio izquierdo -->
+    <div class="col-6">
+      <div class="login-box">
+        <h2>Iniciar Sesión</h2>
+        <form action="validationHashing.jsp" method="post">
+          <div class="form-group">
+            <label for="userName">Email / Usuario:</label>
+            <input type="text" id="userName" name="userName" required />
+          </div>
+          <div class="form-group">
+            <label for="userPass">Contraseña:</label>
+            <input type="password" id="userPass" name="userPass" required />
+          </div>
+          <div class="form-buttons">
+            <input type="submit" value="Login">
+          </div>
+        </form>
+        <div class="signup-link">
+          <p>¿No tienes cuenta? <a href="newUser.html">Regístrate aquí</a></p>
         </div>
-        <div class="form-group">
-          <label for="userPass">Contraseña:</label>
-          <input type="password" id="userPass" name="userPass" required />
-        </div>
-        <div class="form-buttons">
-          <input type="submit" value="Login">
-        </div>
-      </form>
-      <div class="signup-link">
-        <p>¿No tienes cuenta? <a href="newUser.html">Regístrate aquí</a></p>
       </div>
     </div>
+    <div class="col-3"></div> <!-- Espacio derecho -->
   </div>
 </body>
 </html>
