@@ -16,13 +16,13 @@
         box-sizing: border-box;
       }
       body {
-        font-family: Arial, sans-serif;
+        font-family: Calibri, sans-serif;
         background-color: #f8f9fa;
         padding: 20px;
         font-size: 14px;
       }
       .taskbar {
-        background-color: #6F4E37;
+        background-color: #555555;
         color: #fff;
         padding: 10px 20px;
         text-align: center;
@@ -31,7 +31,7 @@
       .nav-bar {
         display: flex;
         flex-direction: column;
-        background-color: #6F4E37;
+        background-color: #555555;
         padding: 10px 20px;
         gap: 10px;
         margin-bottom: 20px;
@@ -55,7 +55,7 @@
         transition: background-color 0.3s ease;
       }
       .nav-right a:hover {
-        background-color: #8c6d54;
+        background-color: #777;
       }
       .container {
         background-color: #fff;
@@ -80,8 +80,11 @@
         text-align: left;
       }
       th {
-        background-color: #6F4E37;
+        background-color: #555555;
         color: #fff;
+      }
+      td {
+        color: #333;
       }
       img {
         width: 50px;
@@ -90,7 +93,7 @@
         object-fit: cover;
       }
       a.button {
-        color: #6F4E37;
+        color: #555555;
         font-weight: bold;
         text-decoration: none;
       }
@@ -120,7 +123,6 @@
         .col-12 { width: 100%; }
       }
 
-      /* Responsive layout for larger screens (PC) */
       @media screen and (min-width: 768px) {
         .nav-right a {
           font-size: 15px;
@@ -151,8 +153,8 @@
     </div>
 
     <div class="nav-bar">
-      <div class="nav-left">Admin Dashboard</div>
-      <div class="nav-right">
+      <div class="nav-left col-4">Admin Dashboard</div>
+      <div class="nav-right col-8">
         <a href="welcomeMenu.jsp">Home</a>
         <a href="signout.jsp">Sign Out</a>
       </div>
@@ -162,13 +164,13 @@
       <h2>List of Users</h2>
       <table>
         <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th>Email</th>
-          <th>Birth Date</th>
-          <th>Gender</th>
-          <th>Profile Picture</th>
-          <th>Actions</th>
+          <th class="col-1">ID</th>
+          <th class="col-2">Name</th>
+          <th class="col-3">Email</th>
+          <th class="col-2">Birth Date</th>
+          <th class="col-2">Gender</th>
+          <th class="col-1">Profile Picture</th>
+          <th class="col-1">Actions</th>
         </tr>
 <%
     while(rs.next()){
