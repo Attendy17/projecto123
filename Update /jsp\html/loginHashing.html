@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Login Form</title>
+    <style>
+      /* Basic resets to remove default margin and padding */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Body styling for full viewport height with centered content */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f8f9fa; /* Soft background color */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+
+      /* Container styling for the login form box */
+      .login-container {
+        background-color: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 350px;
+        padding: 40px;
+      }
+
+      /* Logo styling */
+      .logo {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
+      .logo h1 {
+        font-size: 24px;
+        color: #333;
+      }
+
+      /* Heading for the login form */
+      .login-container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+      }
+
+      /* Form group styling for labels and inputs */
+      .form-group {
+        margin-bottom: 15px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #555;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+      }
+
+      /* Container for the login button */
+      .form-buttons {
+        margin-top: 20px;
+        text-align: center;
+      }
+      .form-buttons input[type="submit"] {
+        background-color: #6F4E37; /* Dark brown */
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+      }
+
+      /* Styling for the sign-up link */
+      .signup-link {
+        text-align: center;
+        margin-top: 20px;
+      }
+      .signup-link a {
+        color: #6F4E37;
+        text-decoration: none;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Login container holds the entire login form -->
+    <div class="login-container">
+      <!-- Logo section displaying the application name -->
+      <div class="logo">
+        <h1>minifacebook</h1>
+      </div>
+      <!-- Login form header -->
+      <h2>Login</h2>
+      <!-- Login form that submits to validationHashing.jsp via POST method -->
+      <form id="loginForm" action="validationHashing.jsp" method="post">
+        <!-- Form group for entering email (used as username) -->
+        <div class="form-group">
+          <label for="userName">Email / Username:</label>
+          <input type="text" id="userName" name="userName" required />
+        </div>
+        <!-- Form group for entering password -->
+        <div class="form-group">
+          <label for="userPass">Password:</label>
+          <input type="password" id="userPass" name="userPass" required />
+        </div>
+        <!-- Container for the submit button -->
+        <div class="form-buttons">
+          <input type="submit" value="Login" />
+        </div>
+      </form>
+      <!-- Link for users who want to create a new account -->
+      <div class="signup-link">
+        <p>¿No tienes cuenta? <a href="newUser.html">Crea tu cuenta aquí</a></p>
+      </div>
+    </div>
+  </body>
+</html>
