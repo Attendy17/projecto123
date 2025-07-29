@@ -28,7 +28,7 @@
   <body>
     <div class="container">
 <%
-    // Verificar que la petición tenga tipo multipart/form-data
+   // Check that the request has multipart/form-data content type
     HttpServletRequest req = (HttpServletRequest) request;
     String contentType = req.getContentType();
     if(contentType == null || !contentType.toLowerCase().contains("multipart/form-data")){
@@ -36,7 +36,7 @@
         return;
     }
     
-    // Variables para almacenar los datos recibidos
+    // Variables to store the received data
     long userId = 0;
     String name = "";
     String email = "";
@@ -44,7 +44,7 @@
     String gender = "";
     String profilePicturePath = "";
     
-    // Definir la ruta física para almacenar las imágenes
+    // Define the physical path to store the images
     String uploadPath = application.getRealPath("/") + "cpen410/imagesjson/";
     File uploadDir = new File(uploadPath);
     if (!uploadDir.exists()){
@@ -53,7 +53,7 @@
     
     int maxFileSize = 5000 * 1024; // 5 MB
     
-    // Configurar Apache Commons FileUpload
+    // Configure Apache Commons FileUpload
     DiskFileItemFactory factory = DiskFileItemFactory.builder()
                                   .setPath(uploadDir.getAbsolutePath())
                                   .get();
@@ -96,11 +96,11 @@
         return;
     }
     
-    // Actualizar la información del usuario en la base de datos
+    // Update the user's information in the database
     AdminDAO adminDAO = new AdminDAO();
     boolean updated = false;
     try {
-        // Actualizar datos básicos (nombre, email, fecha de nacimiento y género)
+       // Update basic information (name, email, date of birth, and gender)
         updated = adminDAO.updateUser(userId, name, email, birthDate, gender);
         // Si se subió una foto, actualizar la ruta en la base de datos
         if(!profilePicturePath.isEmpty()){
@@ -114,7 +114,7 @@
     }
     adminDAO.close();
     
-    // Mostrar mensajes de éxito o error
+    // Display success or error messages
     if(updated){
         out.println("<h2>Usuario actualizado correctamente.</h2>");
         out.println("<p><a href='adminDashboard.jsp'>Volver al Dashboard</a></p>");
