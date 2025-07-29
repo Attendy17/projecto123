@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>Send Friend Request - MiniFacebook</title>
     <style>
-        //Basic styling and responsive layout setup 
+        /* Basic styling and responsive layout setup */
         * {
             box-sizing: border-box;
         }
@@ -52,12 +52,12 @@
             color: #555;
         }
 
-        //Mobile-first layout 
+        /* Mobile-first layout */
         [class*="col-"] {
             width: 100%;
         }
 
-        // Responsive grid for tablets and desktops 
+        /* Responsive grid for tablets and desktops */
         @media only screen and (min-width: 768px) {
             .col-1 {width: 8.33%;}
             .col-2 {width: 16.66%;}
@@ -90,6 +90,7 @@
         <%
             // Get the current logged-in user's ID from session
             Long userId = (Long) session.getAttribute("userId");
+
             // Redirect to login page if user is not authenticated
             if (userId == null) {
                 response.sendRedirect("loginHashing.html");
@@ -98,6 +99,7 @@
 
             // Get the friendId from the request (sent from previous page/form)
             String friendIdStr = request.getParameter("friendId");
+
             // Validate that the friend ID is present
             if (friendIdStr == null || friendIdStr.trim().isEmpty()) {
                 out.println("<h2>No friend ID specified.</h2>");
@@ -106,8 +108,10 @@
 
             // Convert friendId from String to long
             long friendId = Long.parseLong(friendIdStr);
+
             // Create instance of DAO to handle friend request operation
             FriendshipDAO dao = new FriendshipDAO();
+
             try {
                 // Attempt to send friend request
                 boolean success = dao.sendFriendRequest(userId, friendId);
@@ -125,6 +129,7 @@
                 e.printStackTrace();
             }
         %>
+
         <!-- Link to return to friend search page -->
         <br><br>
         <a href="searchFriends.jsp">← Back to search friends</a>
