@@ -79,10 +79,10 @@
                     gender = fieldValue;
                 }
             } else {
-                // Procesar el campo de archivo (foto de perfil)
+                // Process the file field (profile photo)
                 String fileName = new File(item.getName()).getName();
                 if(fileName != null && !fileName.isEmpty()){
-                    // Generar un nombre único para el archivo
+                    // Generate a unique name for the file
                     String newFileName = userId + "_" + System.currentTimeMillis() + "_" + fileName;
                     Path filePath = FileSystems.getDefault().getPath(uploadPath + newFileName);
                     item.write(filePath);
