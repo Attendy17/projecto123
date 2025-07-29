@@ -3,22 +3,26 @@
   <head>
     <meta charset="UTF-8">
     <title>Sign Up Form</title>
+
     <style>
+      /* Reset default spacing and set box sizing */
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
       }
 
+      /* Basic body styling: center content vertically and horizontally */
       body {
         font-family: Arial, sans-serif;
         background-color: #f8f9fa;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        height: 100vh; /* Full viewport height */
       }
 
+      /* Container for the sign-up form */
       .signup-container {
         background-color: #ffffff;
         border-radius: 8px;
@@ -28,6 +32,7 @@
         max-width: 400px;
       }
 
+      /* Centered logo styling */
       .logo {
         display: flex;
         justify-content: center;
@@ -39,16 +44,19 @@
         color: #333;
       }
 
+      /* Title of the sign-up form */
       .signup-container h2 {
         text-align: center;
         margin-bottom: 20px;
         color: #333;
       }
 
+      /* Each form field section */
       .form-group {
         margin-bottom: 15px;
       }
 
+      /* Label styling for inputs */
       .form-group label {
         display: block;
         margin-bottom: 5px;
@@ -56,6 +64,7 @@
         color: #555;
       }
 
+      /* Input and dropdown styling */
       .form-group input,
       .form-group select {
         width: 100%;
@@ -65,12 +74,14 @@
         font-size: 14px;
       }
 
+      /* Container for the buttons */
       .form-buttons {
         display: flex;
         justify-content: space-between;
         margin-top: 20px;
       }
 
+      /* General button styling */
       .form-buttons input[type="submit"],
       .form-buttons input[type="reset"] {
         padding: 10px 20px;
@@ -80,16 +91,19 @@
         font-size: 14px;
       }
 
+      /* Submit button styling with gradient background */
       .form-buttons input[type="submit"] {
         background: linear-gradient(90deg, #4e310c 0%, #271c03 100%);
         color: #fff;
       }
 
+      /* Reset button styling */
       .form-buttons input[type="reset"] {
         background-color: #4e310c;
         color: #fff;
       }
 
+      /* Login link styling below the form */
       .login-link {
         text-align: center;
         margin-top: 20px;
@@ -105,7 +119,7 @@
         text-decoration: underline;
       }
 
-      /* Column classes for 600px (tablet) */
+      /* Responsive column classes for tablets */
       @media screen and (min-width: 600px) {
         .col-1  { width: 8.33%; }
         .col-2  { width: 16.66%; }
@@ -121,7 +135,7 @@
         .col-12 { width: 100%; }
       }
 
-      /* Column classes for 768px (desktop) */
+      /* Responsive column classes for desktops */
       @media screen and (min-width: 768px) {
         .col-1  { width: 8.33%; }
         .col-2  { width: 16.66%; }
@@ -138,33 +152,47 @@
       }
     </style>
   </head>
+
   <body>
+    <!-- Main sign-up container with responsive width -->
     <div class="signup-container col-12">
+
+      <!-- Site logo or brand name -->
       <div class="logo">
         <h1>minifacebook</h1>
       </div>
+
+      <!-- Form title -->
       <h2>Sign Up</h2>
+
+      <!-- Sign-up form -->
       <form id="form_1" action="addUser.jsp" method="post">
+
+        <!-- Email or Username input -->
         <div class="form-group">
           <label for="userName">Email / Username:</label>
           <input type="text" id="userName" name="userName" required />
         </div>
 
+        <!-- Password input -->
         <div class="form-group">
           <label for="userPass">Password:</label>
           <input type="password" id="userPass" name="userPass" required />
         </div>
 
+        <!-- Full name input -->
         <div class="form-group">
           <label for="completeName">Name:</label>
           <input type="text" id="completeName" name="completeName" required />
         </div>
 
+        <!-- Birth date input -->
         <div class="form-group">
           <label for="birthDate">Birth Date:</label>
           <input type="date" id="birthDate" name="birthDate" required />
         </div>
 
+        <!-- Gender selection -->
         <div class="form-group">
           <label for="gender">Gender:</label>
           <select id="gender" name="gender" required>
@@ -174,14 +202,18 @@
           </select>
         </div>
 
+        <!-- Submit and Reset buttons -->
         <div class="form-buttons">
           <input type="submit" value="Submit" />
           <input type="reset" value="Reset" />
         </div>
       </form>
+
+      <!-- Link to log in page -->
       <div class="login-link">
-        <p>¿Ya tienes una cuenta? <a href="loginHashing.html">Inicia sesión aquí</a></p>
+        <p>Already have an account? <a href="loginHashing.html">Log in here</a></p>
       </div>
+
     </div>
   </body>
 </html>
