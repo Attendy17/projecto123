@@ -1,36 +1,42 @@
-v<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Login - MiniFacebook</title>
   <style>
+    /* Box sizing for all elements */
     * {
       box-sizing: border-box;
     }
 
+    /* Base font for the whole document */
     html {
       font-family: "Lucida Sans", sans-serif;
     }
 
+    /* Body background and margin reset */
     body {
       background-color: #ffffff;
       margin: 0;
       padding: 0;
     }
 
+    /* Clearfix for rows */
     .row::after {
       content: "";
       clear: both;
       display: table;
     }
 
+    /* Column base style: float left, full width by default with padding */
     [class*="col-"] {
       float: left;
       width: 100%;
       padding: 15px;
     }
 
+    /* Responsive column widths for screens wider than 768px */
     @media only screen and (min-width: 768px) {
       .col-1 {width: 8.33%;}
       .col-2 {width: 16.66%;}
@@ -46,6 +52,7 @@ v<!DOCTYPE html>
       .col-12 {width: 100%;}
     }
 
+    /* Header styling */
     .header {
       background-color: #999fff;
       color: white;
@@ -53,6 +60,7 @@ v<!DOCTYPE html>
       text-align: center;
     }
 
+    /* Login box container with background, padding, rounded corners and shadow */
     .login-box {
       background-color: #f1f1f1;
       padding: 20px;
@@ -60,20 +68,24 @@ v<!DOCTYPE html>
       box-shadow: 0 0 10px #ccc;
     }
 
+    /* Title inside login box centered with margin below */
     .login-box h2 {
       text-align: center;
       margin-bottom: 20px;
     }
 
+    /* Form group spacing */
     .form-group {
       margin-bottom: 15px;
     }
 
+    /* Labels displayed as block with spacing below */
     .form-group label {
       display: block;
       margin-bottom: 5px;
     }
 
+    /* Inputs with full width, padding, border and rounded corners */
     .form-group input {
       width: 100%;
       padding: 8px;
@@ -81,10 +93,12 @@ v<!DOCTYPE html>
       border-radius: 3px;
     }
 
+    /* Container for form buttons, centered */
     .form-buttons {
       text-align: center;
     }
 
+    /* Submit button styling */
     .form-buttons input[type="submit"] {
       background-color: #33b5e5;
       color: white;
@@ -94,54 +108,69 @@ v<!DOCTYPE html>
       cursor: pointer;
     }
 
+    /* Submit button hover effect */
     .form-buttons input[type="submit"]:hover {
       background-color: #0099cc;
     }
 
+    /* Signup link container centered with margin */
     .signup-link {
       text-align: center;
       margin-top: 15px;
     }
 
+    /* Signup anchor styles */
     .signup-link a {
       color: #33b5e5;
       text-decoration: none;
     }
 
+    /* Signup anchor hover color */
     .signup-link a:hover {
       color: #0099cc;
     }
   </style>
 </head>
 <body>
+  <!-- Header with site title -->
   <div class="header">
     <h1>MiniFacebook</h1>
   </div>
 
+  <!-- Row container for layout -->
   <div class="row">
-    <div class="col-3"></div> <!-- Espacio izquierdo -->
+    <!-- Left empty space column -->
+    <div class="col-3"></div>
+    <!-- Center column containing login box -->
     <div class="col-6">
       <div class="login-box">
+        <!-- Login form title -->
         <h2>Iniciar Sesión</h2>
+        <!-- Login form sending data to validationHashing.jsp using POST -->
         <form action="validationHashing.jsp" method="post">
+          <!-- Username/email input field -->
           <div class="form-group">
             <label for="userName">Email / Usuario:</label>
             <input type="text" id="userName" name="userName" required />
           </div>
+          <!-- Password input field -->
           <div class="form-group">
             <label for="userPass">Contraseña:</label>
             <input type="password" id="userPass" name="userPass" required />
           </div>
+          <!-- Submit button -->
           <div class="form-buttons">
             <input type="submit" value="Login">
           </div>
         </form>
+        <!-- Link to registration page -->
         <div class="signup-link">
           <p>¿No tienes cuenta? <a href="newUser.html">Regístrate aquí</a></p>
         </div>
       </div>
     </div>
-    <div class="col-3"></div> <!-- Espacio derecho -->
+    <!-- Right empty space column -->
+    <div class="col-3"></div>
   </div>
 </body>
 </html>
