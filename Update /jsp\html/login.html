@@ -1,21 +1,28 @@
 <html>
-	<head>
-		<title>Your first web form!</title>
-	</head>
-	<body>
-		<form id="form_1" action="validation.jsp" method="post">
-			<table border="0">
-				<tr>
-					<td> Username </td>
-					<td><input type="text" id="userName"  name="userName" /></td>
-				</tr>
-				<tr>
-					<td> Password </td>
-					<td><input type="text" id="userPass"  name="userPass" />
-				</tr>
-			</table>
-			<input type="submit" id="Submit" value="submit" />
-			<input type="reset" id="Submit" value="reset" />
-		</form>
-	</body>
+  <head>
+    <title>Your first web form!</title>
+  </head>
+  <body>
+    <!-- Form that sends data via POST to validation.jsp -->
+    <form id="form_1" action="validation.jsp" method="post">
+      <table border="0">
+        <tr>
+          <!-- Label for Username input -->
+          <td> Username </td>
+          <!-- Text input field for the username -->
+          <td><input type="text" id="userName" name="userName" /></td>
+        </tr>
+        <tr>
+          <!-- Label for Password input -->
+          <td> Password </td>
+          <!-- Text input field for the password -->
+          <td><input type="text" id="userPass" name="userPass" /></td>
+        </tr>
+      </table>
+      <!-- Submit button to send the form -->
+      <input type="submit" id="Submit" value="submit" />
+      <!-- Reset button to clear the form inputs -->
+      <input type="reset" id="Submit" value="reset" />
+    </form>
+  </body>
 </html>
