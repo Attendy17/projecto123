@@ -4,14 +4,14 @@
   <meta charset="UTF-8">
   <title>Add Personal Information</title>
   <style>
-    //Reset and base styling 
+    /* Reset and base styling */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
 
-    // Overall layout and typography 
+    /* Overall layout and typography */
     body {
       font-family: 'Calibri', sans-serif;
       background-color: #f8f9fa;
@@ -22,7 +22,7 @@
       font-size: 14px;
     }
 
-    //Container box styling 
+    /* Container box styling */
     .container {
       background-color: #fff;
       border-radius: 8px;
@@ -32,7 +32,7 @@
       padding: 40px;
     }
 
-    // Headings styling
+    /* Headings styling */
     h1 {
       text-align: center;
       margin-bottom: 20px;
@@ -46,12 +46,12 @@
       font-weight: bold;
     }
 
-    // Section spacing 
+    /* Section spacing */
     .section {
       margin-bottom: 20px;
     }
 
-    // Input fields styling 
+    /* Input fields styling */
     .form-group {
       margin-bottom: 15px;
     }
@@ -72,7 +72,7 @@
       font-size: 14px;
     }
 
-    // Submit and reset buttons styling 
+    /* Submit and reset buttons styling */
     .form-buttons {
       display: flex;
       justify-content: space-between;
@@ -99,7 +99,7 @@
       color: #333;
     }
 
-    // Simple CSS grid for layout responsiveness 
+    /* Simple CSS grid for layout responsiveness */
     .row {
       display: flex;
       flex-wrap: wrap;
@@ -110,7 +110,7 @@
       padding: 0 10px;
     }
 
-    // Column widths for different breakpoints 
+    /* Column widths for different breakpoints */
     .col-1 { width: 8.33%; }
     .col-2 { width: 16.66%; }
     .col-3 { width: 25%; }
@@ -124,7 +124,7 @@
     .col-11 { width: 91.66%; }
     .col-12 { width: 100%; }
 
-    //Stack columns on small screens
+    /* Stack columns on small screens */
     @media screen and (max-width: 600px) {
       .row > div[class^="col-"] {
         width: 100% !important;
@@ -149,17 +149,18 @@
     return;
   }
 %>
-  //Form to collect personal information from the user
+
+  <!-- Form to collect personal information from the user -->
   <div class="container">
     <h1>Personal Information</h1>
     
-    //Submit data via POST to another JSP page for processing
+    <!-- Submit data via POST to another JSP page for processing -->
     <form id="personalInfoForm" action="processPersonalInfo.jsp" method="post">
       
-      //Hidden field to pass user ID with the form 
+      <!-- Hidden field to pass user ID with the form -->
       <input type="hidden" name="userId" value="<%= userId %>" />
 
-      //Section for address details
+      <!-- Section for address details -->
       <div class="section">
         <h2>Address</h2>
         <div class="form-group">
@@ -180,7 +181,7 @@
         </div>
       </div>
 
-      //Section for education details
+      <!-- Section for education details -->
       <div class="section">
         <h2>Education</h2>
         <div class="form-group">
@@ -200,7 +201,7 @@
         </div>
       </div>
 
-      //Buttons to submit or reset the form
+      <!-- Buttons to submit or reset the form -->
       <div class="form-buttons">
         <input type="submit" value="Submit" />
         <input type="reset" value="Reset" />
