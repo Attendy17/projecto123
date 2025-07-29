@@ -2,11 +2,13 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="ut.JAR.CPEN410.ProfileDAO" %>
 <%@ page import="ut.JAR.CPEN410.MySQLCompleteConnector" %>
+
 <html>
 <head>
   <meta charset="UTF-8">
   <title>Profile - minifacebook</title>
   <style>
+    /* General styling for layout and responsiveness */
     * {
       margin: 0;
       padding: 0;
@@ -58,8 +60,7 @@
       background-color: #8c6d54;
     }
 
-    .profile-container,
-    .photo-section {
+    .profile-container, .photo-section {
       width: 90%;
       max-width: 800px;
       margin: 20px auto;
@@ -146,7 +147,8 @@
       margin-top: 5px;
     }
 
-    @media only screen and (min-width: 600px) {
+    /* Responsive column layout for larger screens */
+    @media only screen and (min-width: 600px), (min-width: 768px) {
       .nav-bar {
         flex-direction: row;
         justify-content: space-between;
@@ -166,130 +168,12 @@
       .col-11 { width: 91.66%; }
       .col-12 { width: 100%; }
     }
-
-    @media only screen and (min-width: 768px) {
-      .col-1 { width: 8.33%; }
-      .col-2 { width: 16.66%; }
-      .col-3 { width: 25%; }
-      .col-4 { width: 33.33%; }
-      .col-5 { width: 41.66%; }
-      .col-6 { width: 50%; }
-      .col-7 { width: 58.33%; }
-      .col-8 { width: 66.66%; }
-      .col-9 { width: 75%; }
-      .col-10 { width: 83.33%; }
-      .col-11 { width: 91.66%; }
-      .col-12 { width: 100%; }
-    }
   </style>
 </head>
 <body>
+
 <%
+  // Check if user is authenticated
   Long userId = (Long) session.getAttribute("userId");
   if (userId == null) {
-    response.sendRedirect("loginHashing.html");
-    return;
-  }
-
-  ProfileDAO profileDAO = new ProfileDAO();
-  ResultSet rsProfile = profileDAO.getUserProfile(userId);
-  String name = "", email = "", profilePicture = "";
-  Date birthDate = null;
-  if (rsProfile.next()) {
-    name = rsProfile.getString("name");
-    email = rsProfile.getString("email");
-    profilePicture = rsProfile.getString("profile_picture");
-    birthDate = rsProfile.getDate("birth_date");
-  }
-  rsProfile.close();
-  profileDAO.close();
-
-  if (profilePicture == null || profilePicture.trim().isEmpty()) {
-    profilePicture = "cpen410/imagesjson/default-profile.png";
-  }
-
-  MySQLCompleteConnector connector = new MySQLCompleteConnector();
-  connector.doConnection();
-
-  ResultSet rsAddress = connector.doSelect("street, town, state, country", "addresses", "user_id = " + userId);
-  String street = "", town = "", state = "", country = "";
-  if (rsAddress.next()) {
-    street = rsAddress.getString("street");
-    town = rsAddress.getString("town");
-    state = rsAddress.getString("state");
-    country = rsAddress.getString("country");
-  }
-  rsAddress.close();
-
-  ResultSet rsEdu = connector.doSelect("degree, school", "education", "user_id = " + userId);
-  String degree = "", school = "";
-  if (rsEdu.next()) {
-    degree = rsEdu.getString("degree");
-    school = rsEdu.getString("school");
-  }
-  rsEdu.close();
-
-  connector.closeConnection();
-%>
-
-<div class="taskbar">
-  <h1>minifacebook</h1>
-</div>
-
-<div class="nav-bar">
-  <div class="nav-left">Welcome, <%= name %>!</div>
-  <div class="nav-right">
-    <a href="welcomeMenu.jsp">Home</a>
-    <a href="searchFriends.jsp">Search Friends</a>
-    <a href="friendList.jsp">Friend List</a>
-    <a href="signout.jsp">Sign Out</a>
-  </div>
-</div>
-
-<div class="profile-container">
-  <div class="profile-header">
-    <img src="/<%= profilePicture %>" alt="Profile Picture">
-    <h2><%= name %></h2>
-  </div>
-  <div class="profile-info">
-    <p><strong>Email:</strong> <%= email %></p>
-    <p><strong>Birth Date:</strong> <%= (birthDate != null) ? birthDate.toString() : "N/A" %></p>
-    <p><strong>Address:</strong> <%= street %><%= !town.isEmpty() ? ", " + town : "" %><%= !state.isEmpty() ? ", " + state : "" %><%= !country.isEmpty() ? ", " + country : "" %></p>
-    <p><strong>Education:</strong> <%= degree %><%= !school.isEmpty() ? " - " + school : "" %></p>
-  </div>
-  <div class="edit-link">
-    <p><a href="editProfile.jsp">Edit Profile</a></p>
-  </div>
-</div>
-
-<div class="photo-section">
-  <h2>My Photo Posts</h2>
-  <form action="uploadPhoto.jsp" method="post" enctype="multipart/form-data">
-    <input type="file" id="photoFile" name="photoFile" accept="image/*" required />
-    <button type="submit">Publish Photo</button>
-  </form>
-  <div class="photo-gallery">
-    <%
-      ProfileDAO photoDAO = new ProfileDAO();
-      ResultSet rsPhotos = photoDAO.getUserPhotos(userId);
-      while (rsPhotos.next()) {
-        String imageURL = rsPhotos.getString("image_url");
-        long photoId = rsPhotos.getLong("id");
-    %>
-    <div class="photo-post">
-      <img src="/<%= imageURL %>" alt="Photo Post">
-      <form action="deletePhoto.jsp" method="post" onsubmit="return confirm('Are you sure you want to delete this photo?');">
-        <input type="hidden" name="photoId" value="<%= photoId %>">
-        <button type="submit">Delete</button>
-      </form>
-    </div>
-    <%
-      }
-      rsPhotos.close();
-      photoDAO.close();
-    %>
-  </div>
-</div>
-
-</body>
-</html>
+    response.sendRedirect("loginHas
