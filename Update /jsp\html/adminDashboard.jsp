@@ -6,10 +6,12 @@
   <head>
     <meta charset="UTF-8">
     <title>Admin Dashboard - minifacebook</title>
+    <!-- Meta tags to prevent caching of this page -->
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Expires" content="0" />
     <style>
+      /* Basic reset and styling for the page */
       * {
         margin: 0;
         padding: 0;
@@ -21,6 +23,7 @@
         padding: 20px;
         font-size: 14px;
       }
+      /* Top bar with the application title */
       .taskbar {
         background-color: #555555;
         color: #fff;
@@ -28,6 +31,7 @@
         text-align: center;
         margin-bottom: 20px;
       }
+      /* Navigation bar container */
       .nav-bar {
         display: flex;
         flex-direction: column;
@@ -36,16 +40,19 @@
         gap: 10px;
         margin-bottom: 20px;
       }
+      /* Left side of navigation bar */
       .nav-left {
         color: #fff;
         font-size: 18px;
         font-weight: bold;
       }
+      /* Right side navigation links container */
       .nav-right {
         display: flex;
         flex-direction: column;
         gap: 10px;
       }
+      /* Navigation links style */
       .nav-right a {
         color: #fff;
         text-decoration: none;
@@ -57,18 +64,21 @@
       .nav-right a:hover {
         background-color: #777;
       }
+      /* Main container for the content */
       .container {
         background-color: #fff;
         padding: 20px;
         border-radius: 8px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        overflow-x: auto;
+        overflow-x: auto; /* Allows horizontal scrolling if table overflows */
       }
+      /* Heading style */
       h2 {
         text-align: center;
         color: #333;
         margin-bottom: 15px;
       }
+      /* Table styling */
       table {
         width: 100%;
         border-collapse: collapse;
@@ -86,19 +96,21 @@
       td {
         color: #333;
       }
+      /* Profile picture styling */
       img {
         width: 50px;
         height: 50px;
         border-radius: 50%;
         object-fit: cover;
       }
+      /* Styling for action buttons (links) */
       a.button {
         color: #555555;
         font-weight: bold;
         text-decoration: none;
       }
 
-      /* Responsive columns for 600px (tablet) */
+      /* Responsive design for tablets and larger screens */
       @media screen and (min-width: 600px) {
         .nav-bar {
           flex-direction: row;
@@ -109,6 +121,7 @@
           flex-direction: row;
           flex-wrap: wrap;
         }
+        /* Grid column widths */
         .col-1 { width: 8.33%; }
         .col-2 { width: 16.66%; }
         .col-3 { width: 25%; }
@@ -123,6 +136,7 @@
         .col-12 { width: 100%; }
       }
 
+      /* Larger font for links on bigger screens */
       @media screen and (min-width: 768px) {
         .nav-right a {
           font-size: 15px;
@@ -132,26 +146,33 @@
   </head>
   <body>
 <%
+    // Get userId and role from session to verify authentication and authorization
     Long userId = (Long) session.getAttribute("userId");
     String role = (String) session.getAttribute("role");
 
+    // If user is not authenticated, redirect to login page
     if(userId == null || role == null) {
         response.sendRedirect("loginHashing.html");
         return;
     }
 
+    // Check if user has admin role; if not, show access denied message
     if (!"ADMIN".equalsIgnoreCase(role)) {
         out.println("<h2>Access Denied: You do not have administrator privileges.</h2>");
         return;
     }
 
+    // Create AdminDAO instance to interact with user data
     AdminDAO adminDAO = new AdminDAO();
+    // Retrieve all users from database
     ResultSet rs = adminDAO.listUsers();
 %>
+    <!-- Top title bar -->
     <div class="taskbar">
       <h1>minifacebook</h1>
     </div>
 
+    <!-- Navigation bar with links -->
     <div class="nav-bar">
       <div class="nav-left col-4">Admin Dashboard</div>
       <div class="nav-right col-8">
@@ -160,8 +181,9 @@
       </div>
     </div>
 
+    <!-- Main container with users table -->
     <div class="container">
-      <h2>List of Users</h2>
+      <h2>User List</h2>
       <table>
         <tr>
           <th class="col-1">ID</th>
@@ -173,6 +195,7 @@
           <th class="col-1">Actions</th>
         </tr>
 <%
+    // Loop through each user record and display its data in the table
     while(rs.next()){
         long id = rs.getLong("id");
         String nameUser = rs.getString("name");
@@ -180,6 +203,7 @@
         Date birthDate = rs.getDate("birth_date");
         String genderUser = rs.getString("gender");
         String profilePicture = rs.getString("profile_picture");
+        // If user doesn't have a profile picture, use default image
         if(profilePicture == null || profilePicture.trim().isEmpty()){
             profilePicture = "cpen410/imagesjson/default-profile.png";
         }
@@ -192,17 +216,20 @@
           <td><%= genderUser %></td>
           <td><img src="<%= request.getContextPath() %>/<%= profilePicture %>" alt="Profile Picture"/></td>
           <td>
+            <!-- Links to edit or delete the user -->
             <a class="button" href="editUser.jsp?id=<%= id %>">Edit</a> |
             <a class="button" href="deleteUser.jsp?id=<%= id %>" onclick="return confirm('Are you sure?');">Delete</a>
           </td>
         </tr>
 <%
     }
+    // Close database resources
     rs.close();
     adminDAO.close();
 %>
       </table>
       <p style="text-align:center; margin-top: 15px;">
+        <!-- Link to add a new user -->
         <a class="button" href="addUserAdmin.jsp">Add New User</a>
       </p>
     </div>
