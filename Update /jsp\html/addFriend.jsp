@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="ut.JAR.CPEN410.FriendshipDAO" %>
+<%@ page import="ut.JAR.CPEN410.FriendshipDAO" %> <!-- Import the DAO class to manage friend requests -->
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Send Friend Request - MiniFacebook</title>
     <style>
+        //Basic styling and responsive layout setup 
         * {
             box-sizing: border-box;
         }
@@ -51,12 +52,12 @@
             color: #555;
         }
 
-        /* Mobile-first */
+        //Mobile-first layout 
         [class*="col-"] {
             width: 100%;
         }
 
-        /* Responsive layout for larger screens */
+        // Responsive grid for tablets and desktops 
         @media only screen and (min-width: 768px) {
             .col-1 {width: 8.33%;}
             .col-2 {width: 16.66%;}
@@ -75,42 +76,56 @@
 </head>
 <body>
 
+<!-- Page header -->
 <div class="header">
     <h1>MiniFacebook</h1>
 </div>
 
+<!-- Centered content layout using responsive grid -->
 <div class="row">
     <div class="col-3"></div>
     <div class="col-6">
         <div class="content">
+
         <%
+            // Get the current logged-in user's ID from session
             Long userId = (Long) session.getAttribute("userId");
+            // Redirect to login page if user is not authenticated
             if (userId == null) {
                 response.sendRedirect("loginHashing.html");
                 return;
             }
 
+            // Get the friendId from the request (sent from previous page/form)
             String friendIdStr = request.getParameter("friendId");
+            // Validate that the friend ID is present
             if (friendIdStr == null || friendIdStr.trim().isEmpty()) {
                 out.println("<h2>No friend ID specified.</h2>");
                 return;
             }
 
+            // Convert friendId from String to long
             long friendId = Long.parseLong(friendIdStr);
+            // Create instance of DAO to handle friend request operation
             FriendshipDAO dao = new FriendshipDAO();
             try {
+                // Attempt to send friend request
                 boolean success = dao.sendFriendRequest(userId, friendId);
-                dao.close();
+                dao.close(); // Close database connection
+
+                // Display appropriate message depending on outcome
                 if (success) {
                     out.println("<h2>Friend request sent successfully.</h2>");
                 } else {
                     out.println("<h2>Friend request already exists or could not be sent.</h2>");
                 }
             } catch(Exception e) {
+                // Handle errors and print details
                 out.println("<h2>Error sending friend request: " + e.getMessage() + "</h2>");
                 e.printStackTrace();
             }
         %>
+        <!-- Link to return to friend search page -->
         <br><br>
         <a href="searchFriends.jsp">← Back to search friends</a>
         </div>
@@ -118,6 +133,7 @@
     <div class="col-3"></div>
 </div>
 
+<!-- Page footer -->
 <div class="footer">
     <p>MiniFacebook &copy; 2025</p>
 </div>
