@@ -7,6 +7,7 @@
   <meta charset="UTF-8">
   <title>Edit User - minifacebook</title>
   <style>
+    /* Basic CSS reset and styling */
     * {
       margin: 0;
       padding: 0;
@@ -19,6 +20,7 @@
       padding: 20px;
     }
 
+    /* Styling for the top taskbar */
     .taskbar {
       background-color: #555555;
       color: #fff;
@@ -27,6 +29,7 @@
       margin-bottom: 20px;
     }
 
+    /* Navigation bar container styles */
     .nav-bar {
       display: flex;
       flex-direction: column;
@@ -35,6 +38,7 @@
       margin-bottom: 20px;
     }
 
+    /* Left side of nav bar: title */
     .nav-left {
       color: #fff;
       font-size: 18px;
@@ -42,6 +46,7 @@
       margin-bottom: 10px;
     }
 
+    /* Right side of nav bar: links */
     .nav-right {
       display: flex;
       flex-wrap: wrap;
@@ -58,6 +63,7 @@
       text-decoration: underline;
     }
 
+    /* Main container for form and content */
     .container {
       background-color: #fff;
       padding: 20px;
@@ -67,6 +73,7 @@
       width: 100%;
     }
 
+    /* Form group styling */
     .form-group {
       margin-bottom: 15px;
     }
@@ -78,6 +85,7 @@
       margin-bottom: 5px;
     }
 
+    /* Inputs and selects styling */
     .form-group input,
     .form-group select {
       width: 100%;
@@ -87,12 +95,14 @@
       border-radius: 4px;
     }
 
+    /* Form buttons container */
     .form-buttons {
       margin-top: 20px;
       display: flex;
       justify-content: center;
     }
 
+    /* Submit button styling */
     .form-buttons input {
       background-color: #555555;
       color: #fff;
@@ -102,6 +112,7 @@
       cursor: pointer;
     }
 
+    /* Photo gallery layout */
     .photo-gallery {
       display: flex;
       flex-wrap: wrap;
@@ -109,6 +120,7 @@
       gap: 20px;
     }
 
+    /* Individual photo post styling */
     .photo-post {
       text-align: center;
       width: 100%;
@@ -134,7 +146,7 @@
       background-color: #444;
     }
 
-    /* Columnas */
+    /* Responsive columns for tablets and larger screens */
     @media only screen and (min-width: 600px) {
       .nav-bar {
         flex-direction: row;
@@ -145,19 +157,6 @@
       .photo-post {
         width: 45%;
       }
-
-      .col-1 { width: 8.33%; }
-      .col-2 { width: 16.66%; }
-      .col-3 { width: 25%; }
-      .col-4 { width: 33.33%; }
-      .col-5 { width: 41.66%; }
-      .col-6 { width: 50%; }
-      .col-7 { width: 58.33%; }
-      .col-8 { width: 66.66%; }
-      .col-9 { width: 75%; }
-      .col-10 { width: 83.33%; }
-      .col-11 { width: 91.66%; }
-      .col-12 { width: 100%; }
     }
 
     @media only screen and (min-width: 768px) {
@@ -169,27 +168,43 @@
 </head>
 <body>
 <%
+  // Retrieve the logged-in user object from session
   Object user = session.getAttribute("user");
+  
+  // If no user logged in, redirect to login page
   if (user == null) {
     response.sendRedirect("loginHashing.html");
     return;
   }
 
+  // Get the role of the logged-in user
   String role = (String) session.getAttribute("role");
+  
+  // Verify if the user is an admin; if not, show access denied message
   if (role == null || !role.equalsIgnoreCase("admin")) {
     out.println("<h2>Access denied: You do not have permission to edit users.</h2>");
     return;
   }
 
+  // Get the user ID to edit from request parameter
   String idParam = request.getParameter("id");
+  
+  // If no ID provided, show error message and stop
   if (idParam == null || idParam.trim().isEmpty()) {
     out.println("<h2>Error: No user ID provided.</h2>");
     return;
   }
 
+  // Parse user ID to long
   long userIdToEdit = Long.parseLong(idParam.trim());
+
+  // Create AdminDAO instance to interact with DB
   AdminDAO adminDAO = new AdminDAO();
+
+  // Query the database for user details by ID
   ResultSet rs = adminDAO.getUserById(userIdToEdit);
+  
+  // If no user found with the given ID, display error and stop
   if (!rs.next()) {
     out.println("<h2>Error: User not found.</h2>");
     rs.close();
@@ -197,18 +212,23 @@
     return;
   }
 
+  // Retrieve user information from result set
   String name = rs.getString("name");
   String email = rs.getString("email");
   Date birthDate = rs.getDate("birth_date");
   String gender = rs.getString("gender");
+
+  // Close ResultSet and DAO to free resources
   rs.close();
   adminDAO.close();
 %>
 
+  <!-- Top taskbar with site title -->
   <div class="taskbar">
     <h1>minifacebook</h1>
   </div>
 
+  <!-- Navigation bar with dashboard and sign out links -->
   <div class="nav-bar">
     <div class="nav-left">Edit User - Admin Panel</div>
     <div class="nav-right">
@@ -217,22 +237,32 @@
     </div>
   </div>
 
+  <!-- User edit form pre-filled with existing data -->
   <div class="container col-12">
     <h2>Edit User</h2>
     <form action="updateUser.jsp" method="post" enctype="multipart/form-data">
+      <!-- Hidden input to keep track of user ID -->
       <input type="hidden" name="id" value="<%= userIdToEdit %>" />
+
+      <!-- Name input field -->
       <div class="form-group">
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" value="<%= name %>" required />
       </div>
+
+      <!-- Email input field -->
       <div class="form-group">
         <label for="email">Email:</label>
         <input type="email" id="email" name="email" value="<%= email %>" required />
       </div>
+
+      <!-- Birth date input field -->
       <div class="form-group">
         <label for="birthDate">Birth Date:</label>
         <input type="date" id="birthDate" name="birthDate" value="<%= (birthDate != null) ? birthDate.toString() : "" %>" required />
       </div>
+
+      <!-- Gender select dropdown -->
       <div class="form-group">
         <label for="gender">Gender:</label>
         <select id="gender" name="gender" required>
@@ -241,40 +271,39 @@
           <option value="Other" <%= "Other".equalsIgnoreCase(gender) ? "selected" : "" %>>Other</option>
         </select>
       </div>
+
+      <!-- Profile picture upload -->
       <div class="form-group">
         <label for="profilePicture">Profile Picture (Upload):</label>
         <input type="file" id="profilePicture" name="profilePicture" accept="image/*" />
       </div>
+
+      <!-- Submit button -->
       <div class="form-buttons">
         <input type="submit" value="Update User" />
       </div>
     </form>
   </div>
 
+  <!-- Section to show user's photo posts with delete option -->
   <div class="container col-12" style="margin-top: 20px;">
     <h2>User Photo Posts</h2>
     <div class="photo-gallery">
 <%
+  // Create new AdminDAO instance for fetching user's photos
   AdminDAO adminDAOPhotos = new AdminDAO();
+  
+  // Retrieve user's photos from database
   ResultSet rsPhotos = adminDAOPhotos.getUserPhotos(userIdToEdit);
+
+  // Loop through each photo record and display
   while (rsPhotos.next()) {
     String imageURL = rsPhotos.getString("image_url");
     long photoId = rsPhotos.getLong("id");
 %>
       <div class="photo-post col-4">
+        <!-- Display photo -->
         <img src="/<%= imageURL %>" alt="Photo Post" />
-        <form action="deletePhotoAdmin.jsp" method="post" onsubmit="return confirm('Are you sure you want to delete this photo?');">
-          <input type="hidden" name="photoId" value="<%= photoId %>" />
-          <input type="hidden" name="userId" value="<%= userIdToEdit %>" />
-          <button type="submit">Delete</button>
-        </form>
-      </div>
-<%
-  }
-  rsPhotos.close();
-  adminDAOPhotos.close();
-%>
-    </div>
-  </div>
-</body>
-</html>
+        
+        <!-- Form to delete photo -->
+        <form action="deletePhoto
