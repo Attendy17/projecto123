@@ -149,17 +149,17 @@
     return;
   }
 %>
-  <!-- Form to collect personal information from the user -->
+  //Form to collect personal information from the user
   <div class="container">
     <h1>Personal Information</h1>
     
-    <!-- Submit data via POST to another JSP page for processing -->
+    //Submit data via POST to another JSP page for processing
     <form id="personalInfoForm" action="processPersonalInfo.jsp" method="post">
       
-      <!-- Hidden field to pass user ID with the form -->
+      //Hidden field to pass user ID with the form 
       <input type="hidden" name="userId" value="<%= userId %>" />
 
-      <!-- Section for address details -->
+      //Section for address details
       <div class="section">
         <h2>Address</h2>
         <div class="form-group">
@@ -180,7 +180,7 @@
         </div>
       </div>
 
-      <!-- Section for education details -->
+      //Section for education details
       <div class="section">
         <h2>Education</h2>
         <div class="form-group">
@@ -200,7 +200,7 @@
         </div>
       </div>
 
-      <!-- Buttons to submit or reset the form -->
+      //Buttons to submit or reset the form
       <div class="form-buttons">
         <input type="submit" value="Submit" />
         <input type="reset" value="Reset" />
