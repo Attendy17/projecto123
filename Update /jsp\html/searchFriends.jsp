@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="ut.JAR.CPEN410.FriendDAO" %> <!-- Import FriendDAO for friend-related database operations -->
-<%@ page import="ut.JAR.CPEN410.MySQLCompleteConnector" %> <!-- Optional import for custom MySQL connector -->
-<%@ page import="java.sql.*" %> <!-- Import SQL classes -->
+<%@ page import="ut.JAR.CPEN410.FriendDAO" %>
+<%@ page import="ut.JAR.CPEN410.MySQLCompleteConnector" %>
+<%@ page import="java.sql.*" %>
 
 <html>
 <head>
   <meta charset="UTF-8">
   <title>Search Friends - minifacebook</title>
   
-  <!-- Disable browser caching to ensure updated content -->
+  <!-- Disable browser caching -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
@@ -134,7 +134,13 @@
       font-weight: bold;
     }
 
-    /* Responsive adjustments */
+    /* Responsive adjustments and column widths */
+    @media only screen and (max-width: 599px) {
+      [class*="col-"] {
+        width: 100%;
+      }
+    }
+
     @media only screen and (min-width: 600px) {
       .nav-bar {
         flex-direction: row;
@@ -175,26 +181,24 @@
 <body>
 
 <%
-  // Get user ID and username from session
   Long userId = (Long) session.getAttribute("userId");
   String userName = (String) session.getAttribute("userName");
 
-  // Redirect to login if session is invalid
   if (userId == null || userName == null) {
-      response.sendRedirect("loginHashing.html");
-      return;
+    response.sendRedirect("loginHashing.html");
+    return;
   }
 %>
 
 <!-- Top header bar -->
-<div class="taskbar">
+<div class="taskbar col-12">
   <h1>minifacebook</h1>
 </div>
 
 <!-- Navigation menu -->
-<div class="nav-bar">
-  <div class="nav-left">Welcome, <%= userName %>!</div>
-  <div class="nav-right">
+<div class="nav-bar col-12">
+  <div class="nav-left col-6">Welcome, <%= userName %>!</div>
+  <div class="nav-right col-6">
     <a href="welcomeMenu.jsp">Home</a>
     <a href="profile.jsp">Profile</a>
     <a href="friendList.jsp">Friend List</a>
@@ -203,27 +207,25 @@
 </div>
 
 <!-- Main content container -->
-<div class="container">
+<div class="container col-12">
   <h1>Search Friends</h1>
   
   <!-- Friend search form -->
-  <form class="search-form" action="searchFriends.jsp" method="get">
+  <form class="search-form col-12" action="searchFriends.jsp" method="get">
     <input type="text" id="searchQuery" name="searchQuery" placeholder="Search friends by name, location, etc." />
     <button type="submit">Search</button>
   </form>
 
 <%
-  // Get search input from user
   String searchQuery = request.getParameter("searchQuery");
 
-  // Check if the input is valid
   if (searchQuery != null && !searchQuery.trim().isEmpty()) {
-      FriendDAO friendDAO = new FriendDAO();
-      try {
-          ResultSet rs = friendDAO.searchFriends(searchQuery); // Search for friends using DAO
+    FriendDAO friendDAO = new FriendDAO();
+    try {
+      ResultSet rs = friendDAO.searchFriends(searchQuery);
 %>
   <!-- Table to display search results -->
-  <table>
+  <table class="col-12">
     <tr>
       <th>Name</th>
       <th>Age</th>
@@ -232,35 +234,29 @@
       <th>Action</th>
     </tr>
 <%
-      // Iterate over results
       while(rs.next()) {
-          String friendName = rs.getString("name");
-          int age = rs.getInt("age");
+        String friendName = rs.getString("name");
+        int age = rs.getInt("age");
+        String friendTown = rs.getString("town");
+        String friendState = rs.getString("state");
+        String friendCountry = rs.getString("country");
+        String profilePic = rs.getString("profile_picture");
 
-          // Gather and format address
-          String friendTown = rs.getString("town");
-          String friendState = rs.getString("state");
-          String friendCountry = rs.getString("country");
-          String profilePic = rs.getString("profile_picture");
+        if (profilePic == null || profilePic.trim().isEmpty()) {
+          profilePic = "cpen410/imagesjson/default-profile.png";
+        }
 
-          // Use default profile picture if none exists
-          if (profilePic == null || profilePic.trim().isEmpty()) {
-              profilePic = "cpen410/imagesjson/default-profile.png";
-          }
-
-          // Build address string
-          String address = "";
-          if (friendTown != null && !friendTown.trim().isEmpty()) {
-              address += friendTown.trim();
-          }
-          if (friendState != null && !friendState.trim().isEmpty()) {
-              address += (address.isEmpty() ? "" : ", ") + friendState.trim();
-          }
-          if (friendCountry != null && !friendCountry.trim().isEmpty()) {
-              address += (address.isEmpty() ? "" : ", ") + friendCountry.trim();
-          }
+        String address = "";
+        if (friendTown != null && !friendTown.trim().isEmpty()) {
+          address += friendTown.trim();
+        }
+        if (friendState != null && !friendState.trim().isEmpty()) {
+          address += (address.isEmpty() ? "" : ", ") + friendState.trim();
+        }
+        if (friendCountry != null && !friendCountry.trim().isEmpty()) {
+          address += (address.isEmpty() ? "" : ", ") + friendCountry.trim();
+        }
 %>
-    <!-- One result row -->
     <tr>
       <td><%= friendName %></td>
       <td><%= age %></td>
@@ -269,16 +265,15 @@
         <img src="<%= request.getContextPath() %>/<%= profilePic %>" alt="Profile Picture" width="50" height="50" />
       </td>
       <td class="action-link">
-        <!-- Add friend action -->
         <a href="addFriend.jsp?friendId=<%= rs.getLong("id") %>">Add Friend</a>
       </td>
     </tr>
 <%
       }
-      rs.close(); // Close result set
-      friendDAO.close(); // Close DAO connection
+      rs.close();
+      friendDAO.close();
     } catch(Exception e) {
-      out.println("Error searching for friends: " + e.getMessage()); // Print error
+      out.println("Error searching for friends: " + e.getMessage());
       e.printStackTrace();
     }
   }
