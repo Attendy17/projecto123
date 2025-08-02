@@ -76,6 +76,18 @@
 </head>
 <body>
 
+<%
+    // User verification - identical to reference code
+    Long userId = (Long) session.getAttribute("userId");
+
+    if(userId == null) {
+        response.sendRedirect("loginHashing.html");
+        return;
+    }
+
+    String userName = (String) session.getAttribute("userName");
+%>
+
 <!-- Page header -->
 <div class="header">
     <h1>MiniFacebook</h1>
@@ -88,15 +100,6 @@
         <div class="content">
 
         <%
-            // Get the current logged-in user's ID from session
-            Long userId = (Long) session.getAttribute("userId");
-
-            // Redirect to login page if user is not authenticated
-            if (userId == null) {
-                response.sendRedirect("loginHashing.html");
-                return;
-            }
-
             // Get the friendId from the request (sent from previous page/form)
             String friendIdStr = request.getParameter("friendId");
 
