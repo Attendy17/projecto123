@@ -8,13 +8,13 @@
   <meta charset="UTF-8">
   <title>Search Friends - minifacebook</title>
   
-  <!-- Disable browser caching -->
+  <!-- Prevent browser from caching this page -->
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
 
   <style>
-    /* Basic Reset and Layout Styling */
+    /* Base reset */
     * {
       margin: 0;
       padding: 0;
@@ -68,7 +68,7 @@
       background-color: #8c6d54;
     }
 
-    /* Container for search section */
+    /* Content container */
     .container {
       width: 90%;
       max-width: 1000px;
@@ -85,7 +85,7 @@
       margin-bottom: 20px;
     }
 
-    /* Search form layout */
+    /* Search form styling */
     .search-form {
       display: flex;
       flex-direction: column;
@@ -105,7 +105,7 @@
       cursor: pointer;
     }
 
-    /* Friend result table */
+    /* Table styling for search results */
     table {
       width: 100%;
       border-collapse: collapse;
@@ -134,13 +134,12 @@
       font-weight: bold;
     }
 
-    /* Responsive adjustments and column widths */
-    @media only screen and (max-width: 599px) {
-      [class*="col-"] {
-        width: 100%;
-      }
+    /* Mobile-first layout */
+    [class*="col-"] {
+      width: 100%;
     }
 
+    /* Tablet view */
     @media only screen and (min-width: 600px) {
       .nav-bar {
         flex-direction: row;
@@ -162,6 +161,7 @@
       .col-12 { width: 100%; }
     }
 
+    /* Desktop view */
     @media only screen and (min-width: 768px) {
       .col-1 { width: 8.33%; }
       .col-2 { width: 16.66%; }
@@ -181,9 +181,11 @@
 <body>
 
 <%
+  // Retrieve the logged-in user's ID and username from the session
   Long userId = (Long) session.getAttribute("userId");
   String userName = (String) session.getAttribute("userName");
 
+  // If the session does not have a valid user, redirect to login
   if (userId == null || userName == null) {
     response.sendRedirect("loginHashing.html");
     return;
@@ -206,25 +208,28 @@
   </div>
 </div>
 
-<!-- Main content container -->
+<!-- Main content -->
 <div class="container col-12">
   <h1>Search Friends</h1>
   
-  <!-- Friend search form -->
+  <!-- Search form -->
   <form class="search-form col-12" action="searchFriends.jsp" method="get">
     <input type="text" id="searchQuery" name="searchQuery" placeholder="Search friends by name, location, etc." />
     <button type="submit">Search</button>
   </form>
 
 <%
+  // Get the search query parameter
   String searchQuery = request.getParameter("searchQuery");
 
+  // If the user submitted a search term
   if (searchQuery != null && !searchQuery.trim().isEmpty()) {
     FriendDAO friendDAO = new FriendDAO();
     try {
+      // Search friends based on the provided query
       ResultSet rs = friendDAO.searchFriends(searchQuery);
 %>
-  <!-- Table to display search results -->
+  <!-- Results table -->
   <table class="col-12">
     <tr>
       <th>Name</th>
@@ -242,10 +247,12 @@
         String friendCountry = rs.getString("country");
         String profilePic = rs.getString("profile_picture");
 
+        // Use default profile picture if none is provided
         if (profilePic == null || profilePic.trim().isEmpty()) {
           profilePic = "cpen410/imagesjson/default-profile.png";
         }
 
+        // Build the address string
         String address = "";
         if (friendTown != null && !friendTown.trim().isEmpty()) {
           address += friendTown.trim();
