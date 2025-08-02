@@ -99,55 +99,40 @@
       color: #333;
     }
 
-    /* Simple CSS grid for layout responsiveness */
-    .row {
-      display: flex;
-      flex-wrap: wrap;
-      margin: 0 -10px;
+    /* Mobile-first layout */
+    [class*="col-"] {
+        width: 100%;
     }
 
-    .row > div[class^="col-"] {
-      padding: 0 10px;
-    }
-
-    /* Column widths for different breakpoints */
-    .col-1 { width: 8.33%; }
-    .col-2 { width: 16.66%; }
-    .col-3 { width: 25%; }
-    .col-4 { width: 33.33%; }
-    .col-5 { width: 41.66%; }
-    .col-6 { width: 50%; }
-    .col-7 { width: 58.33%; }
-    .col-8 { width: 66.66%; }
-    .col-9 { width: 75%; }
-    .col-10 { width: 83.33%; }
-    .col-11 { width: 91.66%; }
-    .col-12 { width: 100%; }
-
-    /* Stack columns on small screens */
-    @media screen and (max-width: 600px) {
-      .row > div[class^="col-"] {
-        width: 100% !important;
-      }
+    /* Responsive grid for tablets and desktops */
+    @media only screen and (min-width: 768px) {
+        .col-1 {width: 8.33%;}
+        .col-2 {width: 16.66%;}
+        .col-3 {width: 25%;}
+        .col-4 {width: 33.33%;}
+        .col-5 {width: 41.66%;}
+        .col-6 {width: 50%;}
+        .col-7 {width: 58.33%;}
+        .col-8 {width: 66.66%;}
+        .col-9 {width: 75%;}
+        .col-10 {width: 83.33%;}
+        .col-11 {width: 91.66%;}
+        .col-12 {width: 100%;}
     }
   </style>
 </head>
 <body>
 
 <%
-  // Check if user is authenticated by looking for the userId in the session
-  Long userId = (Long) session.getAttribute("userId");
-  if (userId == null) {
-%>
-  <!-- If not authenticated, show an error message -->
-  <div class="container">
-    <h1>Error: User not authenticated</h1>
-    <p>Please log in again.</p>
-  </div>
-<%
-    // Stop further processing if user is not logged in
-    return;
-  }
+    // User verification - identical to reference code
+    Long userId = (Long) session.getAttribute("userId");
+
+    if(userId == null) {
+        response.sendRedirect("loginHashing.html");
+        return;
+    }
+
+    String userName = (String) session.getAttribute("userName");
 %>
 
   <!-- Form to collect personal information from the user -->
