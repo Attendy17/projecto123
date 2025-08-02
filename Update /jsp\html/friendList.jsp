@@ -26,7 +26,7 @@
             color: #333;
         }
 
-        /* Mobile-first layout */
+        /* Mobile-first layout for grid columns */
         [class*="col-"] {
             width: 100%;
         }
@@ -47,7 +47,7 @@
             .col-12 {width: 100%;}
         }
 
-        /* Top taskbar */
+        /* Top bar with app name */
         .taskbar {
             background-color: #333;
             color: #fff;
@@ -55,7 +55,7 @@
             text-align: center;
         }
 
-        /* Navigation bar */
+        /* Navigation bar styles */
         .nav-bar {
             display: flex;
             flex-wrap: wrap;
@@ -65,11 +65,13 @@
             padding: 10px 20px;
         }
 
+        /* Left section of navbar (welcome text) */
         .nav-left {
             color: #fff;
             font-size: 18px;
         }
 
+        /* Right section of navbar (links) */
         .nav-right {
             display: flex;
             flex-wrap: wrap;
@@ -88,7 +90,7 @@
             background-color: #555;
         }
 
-        /* Content container */
+        /* Main container for the content */
         .container {
             width: 90%;
             max-width: 1000px;
@@ -99,13 +101,13 @@
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        /* Titles */
+        /* Section titles */
         h1 {
             text-align: center;
             margin-bottom: 20px;
         }
 
-        /* Table styles */
+        /* Table styling for friends list */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -123,13 +125,13 @@
             color: white;
         }
 
-        /* Profile picture */
+        /* Friend's profile picture */
         img {
             border-radius: 50%;
             object-fit: cover;
         }
 
-        /* Responsive for small screens */
+        /* Responsive navbar for mobile */
         @media only screen and (max-width: 600px) {
             .nav-bar {
                 flex-direction: column;
@@ -147,23 +149,27 @@
 </head>
 <body>
 <%
+    // ==============================
     // Session verification (exact as reference)
+    // ==============================
     Long userId = (Long) session.getAttribute("userId");
 
     if(userId == null) {
+        // Redirect to login page if not logged in
         response.sendRedirect("loginHashing.html");
         return;
     }
 
+    // Retrieve the logged-in user's name
     String userName = (String) session.getAttribute("userName");
 %>
 
-    <!-- Top taskbar -->
+    <!-- Top taskbar with app name -->
     <div class="taskbar">
         <h1>minifacebook</h1>
     </div>
 
-    <!-- Navigation bar -->
+    <!-- Navigation bar with welcome text and menu links -->
     <div class="nav-bar">
         <div class="nav-left">Welcome, <%= userName %>!</div>
         <div class="nav-right">
@@ -174,13 +180,14 @@
         </div>
     </div>
 
-    <!-- Friends list container -->
+    <!-- Container for the friends list -->
     <div class="container col-12">
         <h1>My Friends</h1>
 <%
-    // DAO to fetch friendships
+    // Create DAO object to retrieve friendships
     FriendshipDAO dao = new FriendshipDAO();
     try {
+        // Get list of friends for current user
         ResultSet rs = dao.listFriends(userId);
 %>
         <div class="row">
@@ -192,22 +199,27 @@
                     <th class="col-3">Friendship Date</th>
                 </tr>
 <%
-        // Loop through friends
+        // Loop through each friend in the list
         while(rs.next()) {
+            // Retrieve friendship data
             long friendshipId = rs.getLong("id");
             long user1 = rs.getLong("user1_id");
             long user2 = rs.getLong("user2_id");
             Timestamp createdAt = rs.getTimestamp("created_at");
 
+            // Determine friend's user ID
             long friendId = (user1 == userId) ? user2 : user1;
+
+            // Format friendship creation date
             String friendshipDate = (createdAt != null) ? createdAt.toLocalDateTime().toLocalDate().toString() : "";
 
+            // Query friend details from database
             MySQLCompleteConnector connector = new MySQLCompleteConnector();
             connector.doConnection();
             ResultSet rsFriend = connector.doSelect("name, profile_picture", "users", "id = " + friendId);
 
             String friendName = "";
-            String profilePic = "cpen410/imagesjson/default-profile.png";
+            String profilePic = "cpen410/imagesjson/default-profile.png"; // Default profile picture
 
             if(rsFriend.next()) {
                 friendName = rsFriend.getString("name");
@@ -215,9 +227,11 @@
                 if(pic != null && !pic.trim().isEmpty()) profilePic = pic;
             }
 
+            // Close friend's result set and DB connection
             rsFriend.close();
             connector.closeConnection();
 %>
+                <!-- Friend row in the table -->
                 <tr>
                     <td class="col-3"><img src="<%= request.getContextPath() %>/<%= profilePic %>" width="50" height="50" /></td>
                     <td class="col-2"><%= friendshipId %></td>
@@ -226,9 +240,11 @@
                 </tr>
 <%
         }
+        // Close main result set and DAO
         rs.close();
         dao.close();
     } catch(Exception e) {
+        // Show error if fetching friends fails
         out.println("Error listing friends: " + e.getMessage());
         e.printStackTrace();
     }
