@@ -110,6 +110,27 @@
         text-decoration: none;
       }
 
+      /* Mobile-first layout */
+      [class*="col-"] {
+          width: 100%;
+      }
+
+      /* Responsive grid for tablets and desktops */
+      @media only screen and (min-width: 768px) {
+          .col-1 { width: 8.33%; }
+          .col-2 { width: 16.66%; }
+          .col-3 { width: 25%; }
+          .col-4 { width: 33.33%; }
+          .col-5 { width: 41.66%; }
+          .col-6 { width: 50%; }
+          .col-7 { width: 58.33%; }
+          .col-8 { width: 66.66%; }
+          .col-9 { width: 75%; }
+          .col-10 { width: 83.33%; }
+          .col-11 { width: 91.66%; }
+          .col-12 { width: 100%; }
+      }
+
       /* Responsive design for tablets and larger screens */
       @media screen and (min-width: 600px) {
         .nav-bar {
@@ -121,19 +142,6 @@
           flex-direction: row;
           flex-wrap: wrap;
         }
-        /* Grid column widths */
-        .col-1 { width: 8.33%; }
-        .col-2 { width: 16.66%; }
-        .col-3 { width: 25%; }
-        .col-4 { width: 33.33%; }
-        .col-5 { width: 41.66%; }
-        .col-6 { width: 50%; }
-        .col-7 { width: 58.33%; }
-        .col-8 { width: 66.66%; }
-        .col-9 { width: 75%; }
-        .col-10 { width: 83.33%; }
-        .col-11 { width: 91.66%; }
-        .col-12 { width: 100%; }
       }
 
       /* Larger font for links on bigger screens */
@@ -146,30 +154,31 @@
   </head>
   <body>
 <%
-    // Get userId and role from session to verify authentication and authorization
+    // Get userId and userName from session for authentication and to use in page if needed
     Long userId = (Long) session.getAttribute("userId");
-    String role = (String) session.getAttribute("role");
 
-    // If user is not authenticated, redirect to login page
-    if(userId == null || role == null) {
+    if (userId == null) {
         response.sendRedirect("loginHashing.html");
         return;
     }
 
-    // Check if user has admin role; if not, show access denied message
-    if (!"ADMIN".equalsIgnoreCase(role)) {
+    String userName = (String) session.getAttribute("userName");
+
+    // Check if role is admin for authorization
+    String role = (String) session.getAttribute("role");
+    if (role == null || !"ADMIN".equalsIgnoreCase(role)) {
         out.println("<h2>Access Denied: You do not have administrator privileges.</h2>");
         return;
     }
 
     // Create AdminDAO instance to interact with user data
     AdminDAO adminDAO = new AdminDAO();
-    // Retrieve all users from database
     ResultSet rs = adminDAO.listUsers();
 %>
     <!-- Top title bar -->
     <div class="taskbar">
       <h1>minifacebook</h1>
+      <p style="color:#ccc; font-size: 14px;">Logged in as: <%= userName %></p>
     </div>
 
     <!-- Navigation bar with links -->
@@ -223,7 +232,6 @@
         </tr>
 <%
     }
-    // Close database resources
     rs.close();
     adminDAO.close();
 %>
