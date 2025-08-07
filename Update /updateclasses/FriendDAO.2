@@ -2,80 +2,61 @@ package ut.JAR.CPEN410;
 
 import java.sql.*;
 
-/**
- * FriendDAO provides methods for searching friends using exact matches and no aliases.
- */
 public class FriendDAO {
-    private MySQLCompleteConnector connector;
+    private MySQLCompleteConnector connector;
 
-    public FriendDAO() {
-        connector = new MySQLCompleteConnector();
-        connector.doConnection();
-    }
+    public FriendDAO() {
+        connector = new MySQLCompleteConnector();
+        connector.doConnection();
+    }
 
-    /**
-     * Búsqueda de amigos con múltiples filtros exactos: town, gender, edad mínima y máxima.
-     *
-     * @param town Pueblo exacto.
-     * @param gender Género exacto.
-     * @param minAge Edad mínima.
-     * @param maxAge Edad máxima.
-     * @return ResultSet con los usuarios encontrados.
-     * @throws SQLException si ocurre un error de base de datos.
-     */
-    public ResultSet searchFriends(String town, String gender, int minAge, int maxAge) throws SQLException {
-        String townCondition = "";
-        if (town != null && !town.trim().isEmpty()) {
-            townCondition = " AND addresses.town = '" + town.trim() + "' ";
-        }
+    /**
+     * Busca amigos según filtros opcionales: username, town, gender, edad mínima y máxima.
+     * Si un filtro es nulo o vacío, se ignora.
+     * Usa LIKE para username y town, y BETWEEN para edad.
+     *
+     * @param username Nombre de usuario (filtro LIKE).
+     * @param town Pueblo (filtro LIKE).
+     * @param gender Género exacto.
+     * @param minAge Edad mínima.
+     * @param maxAge Edad máxima.
+     * @return ResultSet con los usuarios encontrados.
+     * @throws SQLException si hay error en la base de datos.
+     */
+    public ResultSet searchFriends(String username, String town, String gender, int minAge, int maxAge) throws SQLException {
+        String usernameCondition = "";
+        if (username != null && !username.trim().isEmpty()) {
+            usernameCondition = " AND users.name LIKE '%" + username.trim() + "%' ";
+        }
 
-        String genderCondition = "";
-        if (gender != null && !gender.trim().isEmpty()) {
-            genderCondition = " AND users.gender = '" + gender.trim() + "' ";
-        }
+        String townCondition = "";
+        if (town != null && !town.trim().isEmpty()) {
+            townCondition = " AND addresses.town LIKE '%" + town.trim() + "%' ";
+        }
 
-        String sql = "SELECT users.id, users.name, users.email, users.birth_date, users.profile_picture, " +
-                     "addresses.street, addresses.town, addresses.state, addresses.country, " +
-                     "TIMESTAMPDIFF(YEAR, users.birth_date, CURDATE()) AS age " +
-                     "FROM users " +
-                     "JOIN addresses ON users.id = addresses.user_id " +
-                     "WHERE 1=1 " + townCondition + genderCondition +
-                     "AND TIMESTAMPDIFF(YEAR, users.birth_date, CURDATE()) BETWEEN " + minAge + " AND " + maxAge;
+        String genderCondition = "";
+        if (gender != null && !gender.trim().isEmpty()) {
+            genderCondition = " AND users.gender = '" + gender.trim() + "' ";
+        }
 
-        System.out.println("Friend search query: " + sql);
+        String sql = "SELECT users.id, users.name, users.email, users.birth_date, users.profile_picture, " +
+                     "addresses.street, addresses.town, addresses.state, addresses.country, " +
+                     "TIMESTAMPDIFF(YEAR, users.birth_date, CURDATE()) AS age " +
+                     "FROM users " +
+                     "JOIN addresses ON users.id = addresses.user_id " +
+                     "WHERE 1=1 " +
+                     usernameCondition +
+                     townCondition +
+                     genderCondition +
+                     "AND TIMESTAMPDIFF(YEAR, users.birth_date, CURDATE()) BETWEEN " + minAge + " AND " + maxAge;
 
-        Statement stmt = connector.getConnection().createStatement();
-        return stmt.executeQuery(sql);
-    }
+        System.out.println("Friend search query: " + sql);
 
-    /**
-     * Búsqueda por una cadena exacta en campos de nombre, ciudad, estado o país.
-     *
-     * @param searchQuery Cadena exacta a buscar.
-     * @return ResultSet con los resultados que coincidan exactamente con la cadena.
-     * @throws SQLException si ocurre un error en la conexión o la consulta.
-     */
-    public ResultSet searchFriends(String searchQuery) throws SQLException {
-        String sql = "SELECT users.id, users.name, users.email, users.birth_date, users.profile_picture, " +
-                     "addresses.street, addresses.town, addresses.state, addresses.country, " +
-                     "TIMESTAMPDIFF(YEAR, users.birth_date, CURDATE()) AS age " +
-                     "FROM users " +
-                     "JOIN addresses ON users.id = addresses.user_id " +
-                     "WHERE users.name = '" + searchQuery + "' " +
-                     "OR addresses.town = '" + searchQuery + "' " +
-                     "OR addresses.state = '" + searchQuery + "' " +
-                     "OR addresses.country = '" + searchQuery + "'";
+        Statement stmt = connector.getConnection().createStatement();
+        return stmt.executeQuery(sql);
+    }
 
-        System.out.println("Exact match friend search query: " + sql);
-
-        Statement stmt = connector.getConnection().createStatement();
-        return stmt.executeQuery(sql);
-    }
-
-    /**
-     * Cierra la conexión a la base de datos.
-     */
-    public void close() {
-        connector.closeConnection();
-    }
+    public void close() {
+        connector.closeConnection();
+    }
 }
