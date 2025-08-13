@@ -149,108 +149,78 @@
 </head>
 <body>
 <%
-    // ==============================
-    // Session verification (exact as reference)
-    // ==============================
     Long userId = (Long) session.getAttribute("userId");
-
-    if(userId == null) {
-        // Redirect to login page if not logged in
+    if(userId == null){
         response.sendRedirect("loginHashing.html");
         return;
     }
-
-    // Retrieve the logged-in user's name
     String userName = (String) session.getAttribute("userName");
 %>
 
-    <!-- Top taskbar with app name -->
-    <div class="taskbar">
-        <h1>minifacebook</h1>
-    </div>
+<div class="taskbar"><h1>minifacebook</h1></div>
 
-    <!-- Navigation bar with welcome text and menu links -->
-    <div class="nav-bar">
-        <div class="nav-left">Welcome, <%= userName %>!</div>
-        <div class="nav-right">
-            <a href="welcomeMenu.jsp">Home</a>
-            <a href="profile.jsp">Profile</a>
-            <a href="searchFriends.jsp">Search Friends</a>
-            <a href="signout.jsp">Sign Out</a>
-        </div>
+<div class="nav-bar">
+    <div class="nav-left">Welcome, <%= userName %>!</div>
+    <div class="nav-right">
+        <a href="welcomeMenu.jsp">Home</a>
+        <a href="profile.jsp">Profile</a>
+        <a href="searchFriends.jsp">Search Friends</a>
+        <a href="signout.jsp">Sign Out</a>
     </div>
+</div>
 
-    <!-- Container for the friends list -->
-    <div class="container col-12">
-        <h1>My Friends</h1>
+<div class="container col-12">
+    <h1>My Friends</h1>
 <%
-    // Create DAO object to retrieve friendships
     FriendshipDAO dao = new FriendshipDAO();
-    try {
-        // Get list of friends for current user
+    try{
         ResultSet rs = dao.listFriends(userId);
+        MySQLCompleteConnector connector = new MySQLCompleteConnector();
+        connector.doConnection();
 %>
-        <div class="row">
-            <table class="col-12">
-                <tr>
-                    <th class="col-3">Photo</th>
-                    <th class="col-2">ID</th>
-                    <th class="col-4">Name</th>
-                    <th class="col-3">Friendship Date</th>
-                </tr>
+        <table class="col-12">
+            <tr>
+                <th class="col-3">Photo</th>
+                <th class="col-2">ID</th>
+                <th class="col-4">Name</th>
+                <th class="col-3">Friendship Date</th>
+            </tr>
 <%
-        // Loop through each friend in the list
-        while(rs.next()) {
-            // Retrieve friendship data
+        while(rs.next()){
             long friendshipId = rs.getLong("id");
             long user1 = rs.getLong("user1_id");
             long user2 = rs.getLong("user2_id");
             Timestamp createdAt = rs.getTimestamp("created_at");
+            long friendId = (user1==userId)?user2:user1;
+            String friendshipDate = (createdAt!=null)?createdAt.toLocalDateTime().toLocalDate().toString():"";
 
-            // Determine friend's user ID
-            long friendId = (user1 == userId) ? user2 : user1;
-
-            // Format friendship creation date
-            String friendshipDate = (createdAt != null) ? createdAt.toLocalDateTime().toLocalDate().toString() : "";
-
-            // Query friend details from database
-            MySQLCompleteConnector connector = new MySQLCompleteConnector();
-            connector.doConnection();
-            ResultSet rsFriend = connector.doSelect("name, profile_picture", "users", "id = " + friendId);
-
-            String friendName = "";
-            String profilePic = "cpen410/imagesjson/default-profile.png"; // Default profile picture
-
-            if(rsFriend.next()) {
+            ResultSet rsFriend = connector.doSelect("name, profile_picture","users","id="+friendId);
+            String friendName="";
+            String profilePic="cpen410/imagesjson/default-profile.png";
+            if(rsFriend.next()){
                 friendName = rsFriend.getString("name");
                 String pic = rsFriend.getString("profile_picture");
-                if(pic != null && !pic.trim().isEmpty()) profilePic = pic;
+                if(pic!=null && !pic.trim().isEmpty()) profilePic=pic;
             }
-
-            // Close friend's result set and DB connection
             rsFriend.close();
-            connector.closeConnection();
 %>
-                <!-- Friend row in the table -->
-                <tr>
-                    <td class="col-3"><img src="<%= request.getContextPath() %>/<%= profilePic %>" width="50" height="50" /></td>
-                    <td class="col-2"><%= friendshipId %></td>
-                    <td class="col-4"><%= friendName %></td>
-                    <td class="col-3"><%= friendshipDate %></td>
-                </tr>
+            <tr>
+                <td class="col-3"><img src="<%= request.getContextPath() %>/<%= profilePic %>" width="50" height="50"/></td>
+                <td class="col-2"><%= friendshipId %></td>
+                <td class="col-4"><%= friendName %></td>
+                <td class="col-3"><%= friendshipDate %></td>
+            </tr>
 <%
         }
-        // Close main result set and DAO
         rs.close();
+        connector.closeConnection();
         dao.close();
-    } catch(Exception e) {
-        // Show error if fetching friends fails
+    } catch(Exception e){
         out.println("Error listing friends: " + e.getMessage());
         e.printStackTrace();
     }
 %>
-            </table>
-        </div>
-    </div>
+        </table>
+</div>
 </body>
 </html>
