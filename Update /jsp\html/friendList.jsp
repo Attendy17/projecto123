@@ -150,10 +150,7 @@
 <body>
 <%
     Long userId = (Long) session.getAttribute("userId");
-    if(userId == null){
-        response.sendRedirect("loginHashing.html");
-        return;
-    }
+    if(userId==null){ response.sendRedirect("loginHashing.html"); return; }
     String userName = (String) session.getAttribute("userName");
 %>
 
@@ -178,12 +175,12 @@
         MySQLCompleteConnector connector = new MySQLCompleteConnector();
         connector.doConnection();
 %>
-        <table class="col-12">
+        <table>
             <tr>
-                <th class="col-3">Photo</th>
-                <th class="col-2">ID</th>
-                <th class="col-4">Name</th>
-                <th class="col-3">Friendship Date</th>
+                <th>Photo</th>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Friendship Date</th>
             </tr>
 <%
         while(rs.next()){
@@ -205,10 +202,10 @@
             rsFriend.close();
 %>
             <tr>
-                <td class="col-3"><img src="<%= request.getContextPath() %>/<%= profilePic %>" width="50" height="50"/></td>
-                <td class="col-2"><%= friendshipId %></td>
-                <td class="col-4"><%= friendName %></td>
-                <td class="col-3"><%= friendshipDate %></td>
+                <td class="photo"><img src="<%= request.getContextPath() %>/<%= profilePic %>" width="50" height="50"/></td>
+                <td class="id"><%= friendshipId %></td>
+                <td class="name"><%= friendName %></td>
+                <td class="date"><%= friendshipDate %></td>
             </tr>
 <%
         }
